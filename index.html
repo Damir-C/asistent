@@ -394,6 +394,7 @@
   let currentLang = 'hr-HR';
   let recognition = null;
   let isListening = false;
+  let lastFinalIndex = 0; // tracks which results we already processed
 
   // Check support
   const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
@@ -443,6 +444,7 @@
     recognition.lang = currentLang;
     recognition.continuous = true;
     recognition.interimResults = true;
+    lastFinalIndex = 0;
 
     recognition.onstart = () => {
       isListening = true;
@@ -454,21 +456,22 @@
 
     recognition.onresult = (event) => {
       let interim = '';
-      let final = '';
+      let latestFinal = '';
       let lastConfidence = 0;
 
-      for (let i = 0; i < event.results.length; i++) {
+      for (let i = lastFinalIndex; i < event.results.length; i++) {
         const result = event.results[i];
         if (result.isFinal) {
-          final += result[0].transcript;
+          latestFinal += result[0].transcript;
           lastConfidence = result[0].confidence;
+          lastFinalIndex = i + 1; // mark as processed
         } else {
           interim += result[0].transcript;
         }
       }
 
-      if (final) {
-        transcriptEl.textContent = final;
+      if (latestFinal) {
+        transcriptEl.textContent = latestFinal;
         transcriptEl.className = 'transcript-text';
 
         // Show confidence
@@ -478,7 +481,7 @@
         confidenceFill.style.width = pct + '%';
         confidenceFill.style.background = pct > 80 ? 'var(--accent)' : pct > 50 ? 'var(--gold)' : 'var(--red)';
 
-        addLog(`✅ [${pct}%] "${final}"`);
+        addLog(`✅ [${pct}%] "${latestFinal}"`);
       } else if (interim) {
         transcriptEl.textContent = interim;
         transcriptEl.className = 'transcript-text interim';
@@ -500,6 +503,7 @@
       // Auto-restart if still supposed to be listening
       if (isListening) {
         try {
+          lastFinalIndex = 0; // reset counter for new session
           recognition.start();
         } catch(e) {
           isListening = false;
