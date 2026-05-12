@@ -29,37 +29,22 @@
 
   body {
     font-family: 'IBM Plex Sans', sans-serif;
-    background: var(--bg);
-    color: var(--text);
-    min-height: 100dvh;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    padding: 1.5rem 1.2rem;
-    -webkit-tap-highlight-color: transparent;
-    overflow-x: hidden;
+    background: var(--bg); color: var(--text);
+    min-height: 100dvh; display: flex; flex-direction: column;
+    align-items: center; padding: 1.5rem 1.2rem;
+    -webkit-tap-highlight-color: transparent; overflow-x: hidden;
   }
 
   .container {
-    max-width: 420px;
-    width: 100%;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    flex: 1;
+    max-width: 420px; width: 100%;
+    display: flex; flex-direction: column; align-items: center; flex: 1;
   }
 
-  .header-row {
-    width: 100%;
-    display: flex;
-    justify-content: space-between;
-    align-items: flex-start;
-    margin-bottom: 0.5rem;
-  }
+  .header-row { width: 100%; display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 0.5rem; }
 
   .step-badge {
-    font-family: 'JetBrains Mono', monospace;
-    font-size: 0.55rem; color: var(--bg); background: var(--accent);
+    font-family: 'JetBrains Mono', monospace; font-size: 0.55rem;
+    color: var(--bg); background: var(--accent);
     padding: 0.2rem 0.6rem; border-radius: 3px;
     letter-spacing: 0.12em; text-transform: uppercase;
   }
@@ -137,7 +122,7 @@
   .status { font-family: 'JetBrains Mono', monospace; font-size: 0.75rem; color: var(--text-dim); margin-top: 1.2rem; min-height: 1.2em; text-align: center; }
   .status.active { color: var(--red); }
 
-  /* Conversation area */
+  /* Conversation */
   .convo-box {
     width: 100%; background: var(--surface);
     border: 1px solid var(--border); border-radius: 14px;
@@ -158,70 +143,22 @@
   }
 
   .msg {
-    margin-bottom: 0.7rem;
-    padding: 0.6rem 0.8rem;
-    border-radius: 10px;
-    font-size: 0.9rem;
-    line-height: 1.5;
-    max-width: 92%;
-    word-break: break-word;
+    margin-bottom: 0.7rem; padding: 0.6rem 0.8rem; border-radius: 10px;
+    font-size: 0.9rem; line-height: 1.5; max-width: 92%; word-break: break-word;
   }
-
   .msg.user {
-    background: rgba(78,205,196,0.1);
-    border: 1px solid rgba(78,205,196,0.2);
-    margin-left: auto;
-    color: var(--accent);
-    text-align: right;
+    background: rgba(78,205,196,0.1); border: 1px solid rgba(78,205,196,0.2);
+    margin-left: auto; color: var(--accent); text-align: right;
   }
+  .msg.bot { background: rgba(107,111,128,0.1); border: 1px solid rgba(107,111,128,0.15); color: var(--text); }
+  .msg.bot.ask { background: rgba(240,192,64,0.08); border: 1px solid rgba(240,192,64,0.2); color: var(--gold); }
+  .msg.bot.confirm { background: rgba(78,205,196,0.08); border: 1px solid rgba(78,205,196,0.2); }
+  .msg.bot.saved { background: rgba(107,207,127,0.1); border: 1px solid rgba(107,207,127,0.25); color: var(--green); }
+  .msg.bot.error { background: rgba(255,107,107,0.08); border: 1px solid rgba(255,107,107,0.2); color: var(--red); }
 
-  .msg.bot {
-    background: rgba(107,111,128,0.1);
-    border: 1px solid rgba(107,111,128,0.15);
-    color: var(--text);
-  }
-
-  .msg.bot.ask {
-    background: rgba(240,192,64,0.08);
-    border: 1px solid rgba(240,192,64,0.2);
-    color: var(--gold);
-  }
-
-  .msg.bot.confirm {
-    background: rgba(78,205,196,0.08);
-    border: 1px solid rgba(78,205,196,0.2);
-  }
-
-  .msg.bot.saved {
-    background: rgba(107,207,127,0.1);
-    border: 1px solid rgba(107,207,127,0.25);
-    color: var(--green);
-  }
-
-  .msg.bot.error {
-    background: rgba(255,107,107,0.08);
-    border: 1px solid rgba(255,107,107,0.2);
-    color: var(--red);
-  }
-
-  .confirm-label {
-    font-family: 'JetBrains Mono', monospace;
-    font-size: 0.7rem; letter-spacing: 0.05em;
-    display: block; margin-top: 0.3rem;
-  }
-
-  .confirm-detail {
-    font-family: 'JetBrains Mono', monospace;
-    font-size: 0.65rem; color: var(--text-dim);
-    display: block; margin-top: 0.15rem;
-  }
-
-  .hint-text {
-    font-size: 0.7rem;
-    color: var(--text-dim);
-    font-style: italic;
-    margin-top: 0.3rem;
-  }
+  .confirm-label { font-family: 'JetBrains Mono', monospace; font-size: 0.7rem; letter-spacing: 0.05em; display: block; margin-top: 0.3rem; }
+  .confirm-detail { font-family: 'JetBrains Mono', monospace; font-size: 0.65rem; color: var(--text-dim); display: block; margin-top: 0.15rem; }
+  .hint-text { font-size: 0.7rem; color: var(--text-dim); font-style: italic; margin-top: 0.3rem; }
 
   /* Lang toggle */
   .lang-toggle {
@@ -259,7 +196,6 @@
     border-radius: 6px; padding: 0.4rem 0.8rem; cursor: pointer;
   }
   .clear-btn:active { border-color: var(--accent); color: var(--accent); }
-
   .cancel-btn {
     font-family: 'JetBrains Mono', monospace; font-size: 0.6rem;
     color: var(--red); background: none; border: 1px solid rgba(255,107,107,0.3);
@@ -346,20 +282,12 @@
 
   // ---- State ----
   let currentLang = 'hr-HR';
-  let recognition = null;
   let isListening = false;
-  let lastFinalIndex = 0;
   let apiKey = localStorage.getItem('asistent_api_key') || '';
   let brainBusy = false;
+  let restartTimer = null;
 
-  /*
-    State machine:
-    IDLE        → waiting for any voice command
-    NEED_DATE   → reminder detected, missing date
-    NEED_TIME   → have date, missing time
-    CONFIRM     → all info collected, asking user to confirm label
-    NEED_LABEL  → user rejected label, waiting for custom one
-  */
+  // State machine: IDLE → NEED_DATE → NEED_TIME → CONFIRM → NEED_LABEL
   let state = 'IDLE';
   let pendingReminder = { message: '', date: '', time: '', label: '' };
 
@@ -375,42 +303,36 @@
     while (logEl.children.length > 15) logEl.removeChild(logEl.lastChild);
   }
 
-  function addMsg(text, type = 'bot', extraClass = '') {
+  function addMsg(text, type, extraClass) {
     const d = document.createElement('div');
-    d.className = `msg ${type} ${extraClass}`.trim();
+    d.className = `msg ${type} ${extraClass || ''}`.trim();
     d.innerHTML = text;
     convoMessages.appendChild(d);
     convoBox.scrollTop = convoBox.scrollHeight;
   }
 
-  function addUserMsg(text) { addMsg(esc(text), 'user'); }
-
-  function addBotMsg(text, cls = '') { addMsg(text, 'bot', cls); }
+  function addUserMsg(text) { addMsg(esc(text), 'user', ''); }
+  function addBotMsg(text, cls) { addMsg(text, 'bot', cls || ''); }
 
   function resetState() {
     state = 'IDLE';
     pendingReminder = { message: '', date: '', time: '', label: '' };
-    addLog('🔄 State: IDLE');
+    addLog('🔄 State → IDLE');
   }
 
   function getNow() {
     const now = new Date();
     const days = ['nedjelja','ponedjeljak','utorak','srijeda','četvrtak','petak','subota'];
-    return {
-      date: now.toISOString().split('T')[0],
-      day: days[now.getDay()],
-      time: now.toLocaleTimeString('hr-HR', { hour:'2-digit', minute:'2-digit' })
-    };
+    return { date: now.toISOString().split('T')[0], day: days[now.getDay()], time: now.toLocaleTimeString('hr-HR', { hour:'2-digit', minute:'2-digit' }) };
   }
 
-  // ---- Saved reminders (local for now, Google Calendar later) ----
+  // ---- Saved reminders ----
   let reminders = JSON.parse(localStorage.getItem('asistent_reminders') || '[]');
 
   function saveReminder() {
     const r = { ...pendingReminder, createdAt: new Date().toISOString(), id: Date.now() };
     reminders.push(r);
     localStorage.setItem('asistent_reminders', JSON.stringify(reminders));
-
     addBotMsg(
       `✅ Spremljeno!<span class="confirm-label">${esc(r.label)}</span>` +
       `<span class="confirm-detail">📅 ${esc(r.date)}  ⏰ ${esc(r.time)}</span>`,
@@ -418,6 +340,23 @@
     );
     addLog(`💾 Saved: "${r.label}" @ ${r.date} ${r.time}`);
     resetState();
+  }
+
+  // ---- Confirm matching — word-level, no-check-first ----
+  const YES_WORDS = new Set(['da','yes','jes','jest','okej','ok','oke','važi','može','spremi','sačuvaj','potvrdi','super','tako','tačno','jeste']);
+  const NO_WORDS = new Set(['ne','no','nije','promijeni','promijeniti','promjena','change','nee','pogrešno','krivo','netačno','nazad','izmijeni']);
+
+  function checkConfirm(text) {
+    // Split into individual words, check each against word sets
+    const words = text.toLowerCase().replace(/[.,!?]/g, '').trim().split(/\s+/);
+
+    // Check NO first — if user says "ne, da promijeni" they mean no
+    const hasNo = words.some(w => NO_WORDS.has(w));
+    const hasYes = words.some(w => YES_WORDS.has(w));
+
+    if (hasNo) return 'no';
+    if (hasYes) return 'yes';
+    return 'unknown';
   }
 
   // ---- API key ----
@@ -442,34 +381,39 @@
   });
 
   // ---- Brain: call Claude API ----
-  async function callClaude(userText, systemExtra = '') {
+  async function callClaude(userText, systemExtra) {
     const n = getNow();
 
     const baseSystem = `Ti si parser govornih komandi za AI asistenta. Korisnik govori bosanski/hrvatski/srpski.
 Danas je ${n.day}, ${n.date}. Trenutno vrijeme: ${n.time}.
-Odgovori SAMO sa JSON objektom. Bez dodatnog teksta, bez markdown-a.
+Odgovori SAMO sa JSON objektom. Bez dodatnog teksta, bez markdown-a, bez backtick-ova.
 
 Pravila za datume:
 - "sutra" = sutrašnji datum
 - "prekosutra" = za dva dana
 - "u petak" = sljedeći petak
-- "za sat vremena" / "za pola sata" = izračunaj od trenutnog vremena
+- "za sat vremena" = izračunaj od trenutnog vremena
 - "navečer" = 20:00, "ujutro" = 08:00, "popodne" = 14:00
-- Ako korisnik kaže samo dan (npr "u srijedu") bez vremena, time treba biti null
-- Ako korisnik ne kaže ni dan ni datum, date treba biti null`;
+- Ako korisnik ne kaže datum, date mora biti null
+- Ako korisnik ne kaže vrijeme, time mora biti null`;
 
-    const systemPrompt = systemExtra ? baseSystem + '\n\n' + systemExtra : baseSystem + `
+    let fullSystem;
+    if (systemExtra) {
+      fullSystem = baseSystem + '\n\n' + systemExtra;
+    } else {
+      fullSystem = baseSystem + `
 
 Analiziraj korisnikov unos i vrati JSON:
 
 Za PODSJETNIK:
-{"action":"reminder","message":"opis","date":"YYYY-MM-DD ili null","time":"HH:MM ili null","suggested_label":"kratak naziv za podsjetnik"}
+{"action":"reminder","message":"opis podsjetnika","date":"YYYY-MM-DD ili null","time":"HH:MM ili null","suggested_label":"kratak naziv (2-5 riječi)"}
 
 Za PITANJE:
 {"action":"question","message":"kratak odgovor"}
 
 Za NEJASNO:
-{"action":"unclear","message":"objašnjenje šta nisi razumio"}`;
+{"action":"unclear","message":"objašnjenje"}`;
+    }
 
     const res = await fetch('https://api.anthropic.com/v1/messages', {
       method: 'POST',
@@ -482,7 +426,7 @@ Za NEJASNO:
       body: JSON.stringify({
         model: 'claude-haiku-4-5-20251001',
         max_tokens: 300,
-        system: systemPrompt,
+        system: fullSystem,
         messages: [{ role: 'user', content: userText }]
       })
     });
@@ -497,13 +441,16 @@ Za NEJASNO:
     return JSON.parse(raw.replace(/```json|```/g, '').trim());
   }
 
-  // ---- Process voice input based on current state ----
+  // ---- Process voice input based on state ----
   async function handleInput(text) {
     if (!apiKey) {
-      addBotMsg('❌ Nema API ključa — otvori ⚙️ postavke', 'error');
+      addBotMsg('❌ Nema API ključa — otvori ⚙️', 'error');
       return;
     }
-    if (brainBusy) return;
+    if (brainBusy) {
+      addLog('⏳ Brain zauzet, ignoriram input');
+      return;
+    }
     brainBusy = true;
     convoBox.classList.add('thinking');
 
@@ -511,7 +458,7 @@ Za NEJASNO:
       switch (state) {
 
         case 'IDLE': {
-          addLog(`🧠 State: IDLE, parsing: "${text}"`);
+          addLog(`🧠 [IDLE] "${text}"`);
           const p = await callClaude(text);
 
           if (p.action === 'reminder') {
@@ -522,12 +469,18 @@ Za NEJASNO:
 
             if (!pendingReminder.date) {
               state = 'NEED_DATE';
-              addBotMsg(`📝 "${esc(p.message)}"<div class="hint-text">Koji datum? (npr. "sutra", "u petak", "15. juni")</div>`, 'ask');
-              addLog('🧠 State → NEED_DATE');
+              addBotMsg(
+                `📝 ${esc(pendingReminder.message)}` +
+                `<div class="hint-text">Koji datum? (npr. "sutra", "u petak")</div>`, 'ask'
+              );
+              addLog('→ NEED_DATE');
             } else if (!pendingReminder.time) {
               state = 'NEED_TIME';
-              addBotMsg(`📝 "${esc(p.message)}" — 📅 ${esc(pendingReminder.date)}<div class="hint-text">U koliko sati? (npr. "u devet", "u 15:30", "navečer")</div>`, 'ask');
-              addLog('🧠 State → NEED_TIME');
+              addBotMsg(
+                `📝 ${esc(pendingReminder.message)} — 📅 ${esc(pendingReminder.date)}` +
+                `<div class="hint-text">U koliko sati?</div>`, 'ask'
+              );
+              addLog('→ NEED_TIME');
             } else {
               goToConfirm();
             }
@@ -540,11 +493,11 @@ Za NEJASNO:
         }
 
         case 'NEED_DATE': {
-          addLog(`🧠 State: NEED_DATE, parsing: "${text}"`);
+          addLog(`🧠 [NEED_DATE] "${text}"`);
           const p = await callClaude(text,
             `Korisnik odgovara na pitanje "koji datum?" za podsjetnik.
-Parsiraj odgovor kao datum i vrati: {"date":"YYYY-MM-DD","time":"HH:MM ili null"}
-Ako korisnik usput pomene i vrijeme, uključi ga.`
+Vrati SAMO: {"date":"YYYY-MM-DD ili null","time":"HH:MM ili null"}
+Ako korisnik usput pomene i vrijeme, uključi ga. Inače time je null.`
           );
 
           if (p.date) {
@@ -554,58 +507,52 @@ Ako korisnik usput pomene i vrijeme, uključi ga.`
             if (!pendingReminder.time) {
               state = 'NEED_TIME';
               addBotMsg(`📅 ${esc(pendingReminder.date)}<div class="hint-text">U koliko sati?</div>`, 'ask');
-              addLog('🧠 State → NEED_TIME');
+              addLog('→ NEED_TIME');
             } else {
               goToConfirm();
             }
           } else {
-            addBotMsg('Nisam razumio datum. Pokušaj ponovo — npr. "sutra", "u petak", "20. maja".', 'ask');
+            addBotMsg('Nisam razumio datum. Npr. "sutra", "u petak", "20. maja".', 'ask');
           }
           break;
         }
 
         case 'NEED_TIME': {
-          addLog(`🧠 State: NEED_TIME, parsing: "${text}"`);
+          addLog(`🧠 [NEED_TIME] "${text}"`);
           const p = await callClaude(text,
             `Korisnik odgovara na pitanje "u koliko sati?" za podsjetnik.
-Parsiraj odgovor kao vrijeme i vrati: {"time":"HH:MM"}
-"ujutro" = 08:00, "popodne" = 14:00, "navečer" = 20:00.`
+Vrati SAMO: {"time":"HH:MM ili null"}
+"ujutro"=08:00, "popodne"=14:00, "navečer"=20:00.`
           );
 
           if (p.time) {
             pendingReminder.time = p.time;
             goToConfirm();
           } else {
-            addBotMsg('Nisam razumio vrijeme. Pokušaj ponovo — npr. "u devet", "u 15:30", "navečer".', 'ask');
+            addBotMsg('Nisam razumio vrijeme. Npr. "u devet", "u 15:30", "navečer".', 'ask');
           }
           break;
         }
 
         case 'CONFIRM': {
-          addLog(`🧠 State: CONFIRM, input: "${text}"`);
-          const lower = text.toLowerCase().trim();
+          addLog(`🧠 [CONFIRM] "${text}"`);
+          // No API call needed — local word matching
+          const result = checkConfirm(text);
 
-          // Check locally for yes/no — no API call needed
-          const yesWords = ['da', 'yes', 'jes', 'jest', 'okej', 'ok', 'oke', 'važi', 'može', 'spremi', 'sačuvaj', 'potvrdi', 'to je to', 'super'];
-          const noWords = ['ne', 'no', 'nije', 'promijeni', 'promijeniti', 'change', 'nee', 'pogrešno', 'krivo'];
-
-          if (yesWords.some(w => lower.includes(w))) {
+          if (result === 'yes') {
             saveReminder();
-          } else if (noWords.some(w => lower.includes(w))) {
+          } else if (result === 'no') {
             state = 'NEED_LABEL';
             addBotMsg('Izgovori kako želiš da se zove podsjetnik.', 'ask');
-            addLog('🧠 State → NEED_LABEL');
+            addLog('→ NEED_LABEL');
           } else {
             addBotMsg('Reci "da" za spremiti ili "promijeni" za novi naziv.', 'ask');
           }
-          // No API call for confirm state
-          brainBusy = false;
-          convoBox.classList.remove('thinking');
-          return;
+          break;
         }
 
         case 'NEED_LABEL': {
-          addLog(`🧠 State: NEED_LABEL, input: "${text}"`);
+          addLog(`🧠 [NEED_LABEL] "${text}"`);
           pendingReminder.label = text.trim();
           saveReminder();
           break;
@@ -629,10 +576,12 @@ Parsiraj odgovor kao vrijeme i vrati: {"time":"HH:MM"}
       `<div class="hint-text">Reci "da" ili "promijeni"</div>`,
       'confirm'
     );
-    addLog(`🧠 State → CONFIRM: "${pendingReminder.label}" @ ${pendingReminder.date} ${pendingReminder.time}`);
+    addLog(`→ CONFIRM: "${pendingReminder.label}" @ ${pendingReminder.date} ${pendingReminder.time}`);
   }
 
-  // ---- Speech Recognition ----
+  // ==================================================
+  // SPEECH RECOGNITION — continuous:false, clean restart
+  // ==================================================
   const SR = window.SpeechRecognition || window.webkitSpeechRecognition;
 
   if (!SR) {
@@ -656,78 +605,104 @@ Parsiraj odgovor kao vrijeme i vrati: {"time":"HH:MM"}
     });
   });
 
+  // Create a fresh recognition session each time
+  function createRecognition() {
+    if (!SR) return null;
+    const rec = new SR();
+    rec.lang = currentLang;
+    rec.continuous = false;      // KEY FIX: one utterance per session
+    rec.interimResults = false;  // KEY FIX: only final results
+    rec.maxAlternatives = 1;
+
+    rec.onresult = (event) => {
+      // With continuous=false, there's exactly one result
+      if (event.results.length > 0 && event.results[0].isFinal) {
+        const text = event.results[0][0].transcript.trim();
+        if (text.length > 0) {
+          addLog(`🎙️ "${text}"`);
+          addUserMsg(text);
+          handleInput(text);
+        }
+      }
+    };
+
+    rec.onerror = (event) => {
+      addLog(`❌ Mic: ${event.error}`);
+      if (event.error === 'not-allowed') {
+        statusEl.textContent = 'mikrofon blokiran';
+        isListening = false;
+        micBtn.classList.remove('listening');
+      }
+      // For 'no-speech' or 'aborted', the onend handler will restart
+    };
+
+    rec.onend = () => {
+      // Auto-restart after a short delay if still supposed to be listening
+      if (isListening) {
+        clearTimeout(restartTimer);
+        restartTimer = setTimeout(() => {
+          if (isListening) {
+            try {
+              const newRec = createRecognition();
+              if (newRec) newRec.start();
+            } catch(e) {
+              addLog(`❌ Restart: ${e.message}`);
+              isListening = false;
+              micBtn.classList.remove('listening');
+              statusEl.textContent = 'tap mikrofon za početak';
+              statusEl.classList.remove('active');
+            }
+          }
+        }, 400); // 400ms pause between sessions to avoid echo/overlap
+      } else {
+        micBtn.classList.remove('listening');
+        statusEl.textContent = 'tap mikrofon za početak';
+        statusEl.classList.remove('active');
+      }
+    };
+
+    return rec;
+  }
+
   function startListening() {
     if (!SR) return;
-    recognition = new SR();
-    recognition.lang = currentLang;
-    recognition.continuous = true;
-    recognition.interimResults = true;
-    lastFinalIndex = 0;
+    isListening = true;
+    micBtn.classList.add('listening');
+    statusEl.textContent = 'slušam...';
+    statusEl.classList.add('active');
+    addLog('🎙️ Mikrofon aktivan');
 
-    recognition.onstart = () => {
-      isListening = true;
-      micBtn.classList.add('listening');
-      statusEl.textContent = 'slušam...'; statusEl.classList.add('active');
-    };
-
-    recognition.onresult = (event) => {
-      let latestFinal = '';
-
-      for (let i = lastFinalIndex; i < event.results.length; i++) {
-        const r = event.results[i];
-        if (r.isFinal) {
-          latestFinal += r[0].transcript;
-          lastFinalIndex = i + 1;
-        }
-      }
-
-      if (latestFinal) {
-        const trimmed = latestFinal.trim();
-        addLog(`🎙️ "${trimmed}"`);
-        addUserMsg(trimmed);
-        handleInput(trimmed);
-      }
-    };
-
-    recognition.onerror = (event) => {
-      if (event.error === 'not-allowed') {
-        statusEl.textContent = 'mikrofon blokiran'; statusEl.classList.add('error');
-      }
-    };
-
-    recognition.onend = () => {
-      if (isListening) {
-        try { lastFinalIndex = 0; recognition.start(); } catch(e) {
-          isListening = false; micBtn.classList.remove('listening');
-          statusEl.textContent = 'tap mikrofon'; statusEl.classList.remove('active');
-        }
-        return;
-      }
+    try {
+      const rec = createRecognition();
+      if (rec) rec.start();
+    } catch(e) {
+      addLog(`❌ ${e.message}`);
+      isListening = false;
       micBtn.classList.remove('listening');
-      statusEl.textContent = 'tap mikrofon za početak'; statusEl.classList.remove('active');
-    };
-
-    try { recognition.start(); } catch(e) { addLog(`❌ ${e.message}`); }
+    }
   }
 
   function stopListening() {
     isListening = false;
-    if (recognition) { recognition.stop(); recognition = null; }
+    clearTimeout(restartTimer);
+    // Any active recognition will fire onend which won't restart since isListening is false
+    micBtn.classList.remove('listening');
+    statusEl.textContent = 'tap mikrofon za početak';
+    statusEl.classList.remove('active');
+    addLog('⏹️ Stop');
   }
 
   micBtn.addEventListener('click', () => { isListening ? stopListening() : startListening(); });
 
-  // Clear conversation
   clearBtn.addEventListener('click', () => {
     convoMessages.innerHTML = '<div class="msg bot">Zdravo! Reci mi šta da zapamtim.</div>';
     logEl.innerHTML = '';
     resetState();
   });
 
-  // Cancel current reminder flow
   cancelBtn.addEventListener('click', () => {
     if (state !== 'IDLE') {
-      addBotMsg('❌ Otkazano. Reci novu komandu.', 'error');
+      addBotMsg('❌ Otkazano.', 'error');
       resetState();
     }
   });
