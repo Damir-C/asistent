@@ -20,7 +20,10 @@
 
   /* Header */
   .header-row{width:100%;display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:0.2rem}
-  .step-badge{font-family:'JetBrains Mono',monospace;font-size:0.5rem;color:var(--bg);background:var(--accent);padding:0.15rem 0.5rem;border-radius:3px;letter-spacing:0.1em;text-transform:uppercase}
+  .header-left{display:flex;flex-direction:column;gap:0.1rem}
+  .step-badge{font-family:'JetBrains Mono',monospace;font-size:0.45rem;color:var(--bg);background:var(--accent);padding:0.12rem 0.4rem;border-radius:3px;letter-spacing:0.1em;text-transform:uppercase;align-self:flex-start}
+  .header-title{font-family:'JetBrains Mono',monospace;font-size:0.9rem;font-weight:600;color:var(--accent);letter-spacing:0.1em}
+  .header-sub{font-size:0.45rem;color:var(--text-dim);font-family:'JetBrains Mono',monospace}
   .header-right{display:flex;flex-direction:column;align-items:flex-end;gap:0.3rem}
   .header-icons{display:flex;gap:0.3rem}
   .icon-btn{width:30px;height:30px;border-radius:7px;border:1px solid var(--border);background:var(--surface);color:var(--text-dim);cursor:pointer;display:flex;align-items:center;justify-content:center;position:relative}
@@ -33,10 +36,6 @@
   .lang-toggle{display:flex;gap:0.2rem;background:var(--surface);border-radius:5px;padding:0.15rem;border:1px solid var(--border)}
   .lang-btn{font-family:'JetBrains Mono',monospace;font-size:0.5rem;padding:0.2rem 0.4rem;border:none;background:transparent;color:var(--text-dim);border-radius:4px;cursor:pointer}
   .lang-btn.active{background:var(--accent);color:var(--bg)}
-
-  .title-area{text-align:center;width:100%;margin-bottom:0.2rem}
-  h1{font-family:'JetBrains Mono',monospace;font-size:1.1rem;font-weight:600;color:var(--accent);letter-spacing:0.1em}
-  .subtitle{font-size:0.5rem;color:var(--text-dim);font-family:'JetBrains Mono',monospace}
 
   /* Settings */
   .settings-panel{width:100%;background:var(--surface);border:1px solid var(--border);border-radius:10px;padding:1rem;margin-bottom:0.5rem;display:none}
@@ -53,7 +52,7 @@
 
   /* Avatar */
   .avatar-area{width:100%;position:relative;margin-bottom:0.2rem}
-  #avatarCanvas{width:100%;height:340px;display:block;border-radius:10px}
+  #avatarCanvas{width:100%;height:420px;display:block;border-radius:10px}
   .avatar-loading{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);font-family:'JetBrains Mono',monospace;font-size:0.6rem;color:var(--text-dim)}
   .avatar-state{position:absolute;bottom:4px;right:8px;font-family:'JetBrains Mono',monospace;font-size:0.45rem;color:var(--text-dim);background:rgba(15,17,23,0.7);padding:0.1rem 0.3rem;border-radius:3px;letter-spacing:0.08em;text-transform:uppercase}
 
@@ -68,7 +67,7 @@
   .mic-status.active{color:var(--red)}
 
   /* Convo */
-  .convo-box{width:100%;background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:0.7rem 0.9rem;min-height:100px;max-height:240px;text-align:left;margin-bottom:0.5rem;overflow-y:auto;position:relative}
+  .convo-box{width:100%;background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:0.5rem 0.8rem;min-height:60px;max-height:120px;text-align:left;margin-bottom:0.5rem;overflow-y:auto;position:relative}
   .convo-box.thinking{border-color:var(--gold)}
   .convo-box.thinking::after{content:'';position:absolute;bottom:0;left:0;height:2px;background:var(--gold);animation:bl 1.5s ease-in-out infinite}
   @keyframes bl{0%{width:0;left:0}50%{width:60%;left:20%}100%{width:0;left:100%}}
@@ -99,7 +98,11 @@
 <body>
 <div class="container">
   <div class="header-row">
-    <div class="step-badge">Step 4 / 5</div>
+    <div class="header-left">
+      <div class="step-badge">Step 4 / 5</div>
+      <div class="header-title">ASISTENT</div>
+      <div class="header-sub">LilTeddy</div>
+    </div>
     <div class="header-right">
       <div class="header-icons">
         <button class="icon-btn" id="googleSignIn" title="Calendar">
@@ -119,13 +122,16 @@
     </div>
   </div>
 
-  <div class="title-area"><h1>ASISTENT</h1><div class="subtitle">LilTeddy</div></div>
-
   <div class="settings-panel" id="settingsPanel">
     <div class="settings-title">Postavke</div>
     <div class="field-group">
       <div class="field-label">Anthropic API Key</div>
       <input type="password" class="field-input" id="apiKeyInput" placeholder="sk-ant-api03-..." autocomplete="off">
+    </div>
+    <div class="field-group">
+      <div class="field-label">Glas / Voice</div>
+      <select class="field-input" id="voiceSelect" style="padding:0.5rem;appearance:auto;"></select>
+      <button class="save-key-btn" id="testVoiceBtn" style="margin-top:0.4rem;background:var(--gold);font-size:0.5rem;padding:0.3rem 0.6rem;">Test</button>
     </div>
     <button class="save-key-btn" id="saveKeyBtn">Spremi</button>
     <div class="key-status" id="keyStatus"></div>
@@ -181,11 +187,11 @@ renderer.outputColorSpace = THREE.SRGBColorSpace;
 
 const scene = new THREE.Scene();
 const camera = new THREE.PerspectiveCamera(22, 1, 0.1, 20);
-camera.position.set(0, 0.9, 3.5);
-camera.lookAt(0, 0.85, 0);
+camera.position.set(0, 0.7, 4.0);
+camera.lookAt(0, 0.7, 0);
 
 function resize(){
-  const w=container.clientWidth, h=340;
+  const w=container.clientWidth, h=420;
   renderer.setSize(w,h);
   camera.aspect=w/h;
   camera.updateProjectionMatrix();
@@ -282,10 +288,7 @@ loader.load('./LilTeddy.vrm',
     scene.add(vrm.scene);
     vrm.scene.rotation.y = Math.PI;
 
-    // Frame full body
-    camera.position.set(0, 0.85, 3.2);
-    camera.lookAt(0, 0.8, 0);
-
+    // Frame full body — use manual camera position
     loadingEl.style.display = 'none';
     if (vrm.expressionManager) {
       console.log('Expressions:', vrm.expressionManager.expressions.map(e=>e.expressionName));
@@ -429,16 +432,68 @@ let idleTimer=null, lastInteraction=Date.now();
 function avatar(s){if(window.setAvatarState)window.setAvatarState(s);}
 function esc(s){const d=document.createElement('div');d.textContent=s||'';return d.innerHTML;}
 
-// ---- TTS ----
+// ---- TTS with voice picker ----
 let ttsVoice = null;
+const voiceSelect = $('voiceSelect');
+const testVoiceBtn = $('testVoiceBtn');
+const savedVoiceName = localStorage.getItem('asistent_voice') || '';
 
-function initTTS() {
+function populateVoices() {
   const voices = speechSynthesis.getVoices();
-  ttsVoice = voices.find(v => v.lang.startsWith('hr')) || voices.find(v => v.lang.startsWith('sr')) || voices.find(v => v.lang.startsWith('bs')) || null;
+  voiceSelect.innerHTML = '';
+
+  // Prioritize HR/SR/BS voices at top, then all others
+  const balkanVoices = voices.filter(v => /^(hr|sr|bs)/i.test(v.lang));
+  const otherVoices = voices.filter(v => !/^(hr|sr|bs)/i.test(v.lang));
+
+  const addOption = (v, group) => {
+    const opt = document.createElement('option');
+    opt.value = v.name;
+    opt.textContent = `${v.name} (${v.lang})`;
+    if (group) opt.textContent = `★ ${opt.textContent}`;
+    voiceSelect.appendChild(opt);
+  };
+
+  balkanVoices.forEach(v => addOption(v, true));
+  if (balkanVoices.length > 0 && otherVoices.length > 0) {
+    const sep = document.createElement('option');
+    sep.disabled = true;
+    sep.textContent = '───────────';
+    voiceSelect.appendChild(sep);
+  }
+  otherVoices.forEach(v => addOption(v, false));
+
+  // Restore saved selection
+  if (savedVoiceName) {
+    const match = voices.find(v => v.name === savedVoiceName);
+    if (match) { voiceSelect.value = match.name; ttsVoice = match; }
+  }
+
+  // Auto-select best balkan voice if no saved choice
+  if (!ttsVoice && balkanVoices.length > 0) {
+    // Prefer male voices (often contain "Male" or don't contain "Female")
+    const male = balkanVoices.find(v => /male/i.test(v.name) && !/female/i.test(v.name));
+    ttsVoice = male || balkanVoices[0];
+    voiceSelect.value = ttsVoice.name;
+  }
+
   if (ttsVoice) console.log('TTS voice:', ttsVoice.name, ttsVoice.lang);
 }
-speechSynthesis.onvoiceschanged = initTTS;
-setTimeout(initTTS, 1000);
+
+voiceSelect.addEventListener('change', () => {
+  const voices = speechSynthesis.getVoices();
+  ttsVoice = voices.find(v => v.name === voiceSelect.value) || null;
+  localStorage.setItem('asistent_voice', voiceSelect.value);
+  addLog('🔊 Glas: ' + (ttsVoice?.name || 'default'));
+});
+
+testVoiceBtn.addEventListener('click', () => {
+  speak("Zdravo, ja sam LilTeddy. Kako zvučim?");
+});
+
+speechSynthesis.onvoiceschanged = populateVoices;
+setTimeout(populateVoices, 500);
+setTimeout(populateVoices, 1500); // retry for slow-loading voices
 
 function speak(text, onEnd) {
   speechSynthesis.cancel();
@@ -548,6 +603,8 @@ settingsBtn.addEventListener('click',()=>{settingsPanel.classList.toggle('open')
 saveKeyBtn.addEventListener('click',()=>{
   const k=apiKeyInput.value.trim();if(!k){keyStatus.textContent='❌';keyStatus.className='key-status err';return;}
   apiKey=k;localStorage.setItem('asistent_api_key',k);updateDot();
+  // Also save voice
+  if(voiceSelect.value) localStorage.setItem('asistent_voice', voiceSelect.value);
   keyStatus.textContent='✅';keyStatus.className='key-status ok';
   setTimeout(()=>{settingsPanel.classList.remove('open');settingsBtn.classList.remove('active');},600);
 });
