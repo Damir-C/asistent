@@ -55,7 +55,7 @@
 
   .title-area { text-align: center; width: 100%; margin-bottom: 0.5rem; }
   h1 { font-family: 'JetBrains Mono', monospace; font-size: 1.2rem; font-weight: 600; color: var(--accent); letter-spacing: 0.1em; margin-bottom: 0.1rem; }
-  .subtitle { font-size: 0.7rem; color: var(--text-dim); font-family: 'JetBrains Mono', monospace; }
+  .subtitle { font-size: 0.55rem; color: var(--text-dim); font-family: 'JetBrains Mono', monospace; letter-spacing: 0.05em; }
 
   /* Settings */
   .settings-panel {
@@ -76,12 +76,21 @@
   .key-status.ok { color: var(--green); }
   .key-status.err { color: var(--red); }
 
-  /* Google bar */
-  .google-bar { width: 100%; display: flex; align-items: center; justify-content: center; gap: 0.6rem; margin-bottom: 0.8rem; padding: 0.5rem; background: var(--surface); border: 1px solid var(--border); border-radius: 10px; }
-  .google-btn { font-family: 'JetBrains Mono', monospace; font-size: 0.6rem; padding: 0.4rem 0.7rem; border-radius: 6px; cursor: pointer; border: 1px solid var(--border); background: var(--surface); color: var(--text-dim); display: flex; align-items: center; gap: 0.4rem; }
-  .google-btn svg { width: 14px; height: 14px; }
-  .google-status { font-family: 'JetBrains Mono', monospace; font-size: 0.6rem; color: var(--text-dim); }
-  .google-status.signed-in { color: var(--green); }
+  /* Header icons row */
+  .header-icons { display: flex; gap: 0.4rem; }
+
+  /* Google calendar icon button */
+  .gcal-btn {
+    width: 32px; height: 32px; border-radius: 8px;
+    border: 1px solid var(--border); background: var(--surface);
+    color: var(--text-dim); cursor: pointer;
+    display: flex; align-items: center; justify-content: center;
+    position: relative;
+  }
+  .gcal-btn:active { border-color: var(--accent); color: var(--accent); }
+  .gcal-btn svg { width: 16px; height: 16px; }
+  .gcal-dot { width: 6px; height: 6px; border-radius: 50%; background: var(--red); position: absolute; top: -1px; right: -1px; }
+  .gcal-dot.connected { background: var(--green); }
 
   /* Avatar canvas */
   .avatar-container {
@@ -197,15 +206,21 @@
 <div class="container">
   <div class="header-row">
     <div class="step-badge">Step 4 / 5 — Avatar</div>
-    <button class="settings-btn" id="settingsBtn">
-      <svg viewBox="0 0 24 24"><path d="M19.14,12.94c0.04-0.3,0.06-0.61,0.06-0.94c0-0.32-0.02-0.64-0.07-0.94l2.03-1.58c0.18-0.14,0.23-0.41,0.12-0.61 l-1.92-3.32c-0.12-0.22-0.37-0.29-0.59-0.22l-2.39,0.96c-0.5-0.38-1.03-0.7-1.62-0.94L14.4,2.81c-0.04-0.24-0.24-0.41-0.48-0.41 h-3.84c-0.24,0-0.43,0.17-0.47,0.41L9.25,5.35C8.66,5.59,8.12,5.92,7.63,6.29L5.24,5.33c-0.22-0.08-0.47,0-0.59,0.22L2.74,8.87 C2.62,9.08,2.66,9.34,2.86,9.48l2.03,1.58C4.84,11.36,4.8,11.69,4.8,12s0.02,0.64,0.07,0.94l-2.03,1.58 c-0.18,0.14-0.23,0.41-0.12,0.61l1.92,3.32c0.12,0.22,0.37,0.29,0.59,0.22l2.39-0.96c0.5,0.38,1.03,0.7,1.62,0.94l0.36,2.54 c0.05,0.24,0.24,0.41,0.48,0.41h3.84c0.24,0,0.44-0.17,0.47-0.41l0.36-2.54c0.59-0.24,1.13-0.56,1.62-0.94l2.39,0.96 c0.22,0.08,0.47,0,0.59-0.22l1.92-3.32c0.12-0.22,0.07-0.47-0.12-0.61L19.14,12.94z M12,15.6c-1.98,0-3.6-1.62-3.6-3.6 s1.62-3.6,3.6-3.6s3.6,1.62,3.6,3.6S13.98,15.6,12,15.6z"/></svg>
-      <div class="api-dot" id="apiDot"></div>
-    </button>
+    <div class="header-icons">
+      <button class="gcal-btn" id="googleSignIn" title="Google Calendar">
+        <svg viewBox="0 0 24 24"><path fill="#4285F4" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92a5.06 5.06 0 0 1-2.2 3.32v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.1z"/><path fill="#34A853" d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"/><path fill="#FBBC05" d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z"/><path fill="#EA4335" d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z"/></svg>
+        <div class="gcal-dot" id="gcalDot"></div>
+      </button>
+      <button class="settings-btn" id="settingsBtn">
+        <svg viewBox="0 0 24 24"><path d="M19.14,12.94c0.04-0.3,0.06-0.61,0.06-0.94c0-0.32-0.02-0.64-0.07-0.94l2.03-1.58c0.18-0.14,0.23-0.41,0.12-0.61 l-1.92-3.32c-0.12-0.22-0.37-0.29-0.59-0.22l-2.39,0.96c-0.5-0.38-1.03-0.7-1.62-0.94L14.4,2.81c-0.04-0.24-0.24-0.41-0.48-0.41 h-3.84c-0.24,0-0.43,0.17-0.47,0.41L9.25,5.35C8.66,5.59,8.12,5.92,7.63,6.29L5.24,5.33c-0.22-0.08-0.47,0-0.59,0.22L2.74,8.87 C2.62,9.08,2.66,9.34,2.86,9.48l2.03,1.58C4.84,11.36,4.8,11.69,4.8,12s0.02,0.64,0.07,0.94l-2.03,1.58 c-0.18,0.14-0.23,0.41-0.12,0.61l1.92,3.32c0.12,0.22,0.37,0.29,0.59,0.22l2.39-0.96c0.5,0.38,1.03,0.7,1.62,0.94l0.36,2.54 c0.05,0.24,0.24,0.41,0.48,0.41h3.84c0.24,0,0.44-0.17,0.47-0.41l0.36-2.54c0.59-0.24,1.13-0.56,1.62-0.94l2.39,0.96 c0.22,0.08,0.47,0,0.59-0.22l1.92-3.32c0.12-0.22,0.07-0.47-0.12-0.61L19.14,12.94z M12,15.6c-1.98,0-3.6-1.62-3.6-3.6 s1.62-3.6,3.6-3.6s3.6,1.62,3.6,3.6S13.98,15.6,12,15.6z"/></svg>
+        <div class="api-dot" id="apiDot"></div>
+      </button>
+    </div>
   </div>
 
   <div class="title-area">
     <h1>ASISTENT</h1>
-    <div class="subtitle">LilTeddy · voice + brain + calendar</div>
+    <div class="subtitle">LilTeddy</div>
   </div>
 
   <div class="settings-panel" id="settingsPanel">
@@ -217,14 +232,6 @@
     </div>
     <button class="save-key-btn" id="saveKeyBtn">Spremi ključ</button>
     <div class="key-status" id="keyStatus"></div>
-  </div>
-
-  <div class="google-bar">
-    <button class="google-btn" id="googleSignIn">
-      <svg viewBox="0 0 24 24"><path fill="#4285F4" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92a5.06 5.06 0 0 1-2.2 3.32v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.1z"/><path fill="#34A853" d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"/><path fill="#FBBC05" d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z"/><path fill="#EA4335" d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z"/></svg>
-      Calendar
-    </button>
-    <span class="google-status" id="googleStatus"></span>
   </div>
 
   <div id="unsupported" class="unsupported" style="display:none;"></div>
@@ -488,7 +495,6 @@
 </script>
 
 <!-- Main app logic (non-module) -->
-<script src="https://accounts.google.com/gsi/client" async defer></script>
 <script>
   // ---- Config ----
   const GOOGLE_CLIENT_ID = '930740380202-5cub8gtuk2joli9kevbhird3o2ph6vpa.apps.googleusercontent.com';
@@ -503,7 +509,7 @@
   const apiKeyInput = $('apiKeyInput'), saveKeyBtn = $('saveKeyBtn'), keyStatus = $('keyStatus');
   const apiDot = $('apiDot'), convoBox = $('convoBox'), convoMessages = $('convoMessages');
   const clearBtn = $('clearBtn'), cancelBtn = $('cancelBtn');
-  const googleSignIn = $('googleSignIn'), googleStatus = $('googleStatus');
+  const googleSignIn = $('googleSignIn'), gcalDot = $('gcalDot');
 
   // ---- Avatar helper ----
   function avatar(state) {
@@ -583,8 +589,7 @@
       callback: (r) => {
         if (r.error) { addLog('❌ Google: ' + r.error); return; }
         googleAccessToken = r.access_token;
-        googleStatus.textContent = '✅ Povezan'; googleStatus.className = 'google-status signed-in';
-        googleSignIn.innerHTML = '<svg viewBox="0 0 24 24" width="14" height="14"><path fill="#34A853" d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"/></svg> Odjavi';
+        gcalDot.className = 'gcal-dot connected';
         addLog('✅ Google Calendar povezan');
       }
     });
@@ -593,8 +598,9 @@
   googleSignIn.addEventListener('click', () => {
     if (googleAccessToken) {
       google.accounts.oauth2.revoke(googleAccessToken, () => {
-        googleAccessToken = null; googleStatus.textContent = ''; googleStatus.className = 'google-status';
-        googleSignIn.innerHTML = '<svg viewBox="0 0 24 24" width="14" height="14"><path fill="#4285F4" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92a5.06 5.06 0 0 1-2.2 3.32v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.1z"/><path fill="#34A853" d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"/><path fill="#FBBC05" d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z"/><path fill="#EA4335" d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z"/></svg> Calendar';
+        googleAccessToken = null;
+        gcalDot.className = 'gcal-dot';
+        addLog('🔓 Google odjava');
       });
     } else if (tokenClient) { tokenClient.requestAccessToken(); }
   });
@@ -615,7 +621,7 @@
           reminders: { useDefault: false, overrides: [{ method:'popup', minutes:10 },{ method:'popup', minutes:0 }] }
         })
       });
-      if (res.status === 401) { googleAccessToken = null; googleStatus.textContent = '⚠️ Isteklo'; return false; }
+      if (res.status === 401) { googleAccessToken = null; gcalDot.className = 'gcal-dot'; addLog('⚠️ Token istekao'); return false; }
       if (!res.ok) throw new Error((await res.json().catch(()=>({}))).error?.message || res.statusText);
       addLog('📅 Calendar event kreiran');
       return true;
