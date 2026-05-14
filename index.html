@@ -5,163 +5,134 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 <meta name="theme-color" content="#0f1117">
 <title>Asistent</title>
 <link rel="manifest" href="manifest.json">
 <style>
   @import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;600&family=IBM+Plex+Sans:wght@300;400;600&display=swap');
-  :root {
-    --bg:#0f1117;--surface:#1a1d27;--border:#2a2d3a;--text:#e0e0e8;--text-dim:#6b6f80;
-    --accent:#4ecdc4;--red:#ff6b6b;--red-glow:rgba(255,107,107,0.25);--gold:#f0c040;--green:#6bcf7f;
-  }
+  :root{--bg:#0f1117;--surface:#1a1d27;--border:#2a2d3a;--text:#e0e0e8;--text-dim:#6b6f80;--accent:#4ecdc4;--red:#ff6b6b;--red-glow:rgba(255,107,107,0.25);--gold:#f0c040;--green:#6bcf7f}
   *{margin:0;padding:0;box-sizing:border-box}
-  body{font-family:'IBM Plex Sans',sans-serif;background:var(--bg);color:var(--text);min-height:100dvh;display:flex;flex-direction:column;align-items:center;padding:0.8rem 1rem 1.2rem;-webkit-tap-highlight-color:transparent;overflow-x:hidden}
-  .container{max-width:420px;width:100%;display:flex;flex-direction:column;align-items:center;flex:1}
+  body{font-family:'IBM Plex Sans',sans-serif;background:var(--bg);color:var(--text);height:100dvh;display:flex;flex-direction:column;align-items:center;padding:0.6rem 0.8rem 0.8rem;-webkit-tap-highlight-color:transparent;overflow:hidden}
+  .container{max-width:420px;width:100%;display:flex;flex-direction:column;align-items:center;height:100%;overflow:hidden}
 
   /* Header */
-  .header-row{width:100%;display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:0.2rem}
-  .header-left{display:flex;flex-direction:column;gap:0.1rem}
-  .step-badge{font-family:'JetBrains Mono',monospace;font-size:0.45rem;color:var(--bg);background:var(--accent);padding:0.12rem 0.4rem;border-radius:3px;letter-spacing:0.1em;text-transform:uppercase;align-self:flex-start}
-  .header-title{font-family:'JetBrains Mono',monospace;font-size:0.9rem;font-weight:600;color:var(--accent);letter-spacing:0.1em}
-  .header-sub{font-size:0.45rem;color:var(--text-dim);font-family:'JetBrains Mono',monospace}
-  .header-right{display:flex;flex-direction:column;align-items:flex-end;gap:0.3rem}
-  .header-icons{display:flex;gap:0.3rem}
-  .icon-btn{width:30px;height:30px;border-radius:7px;border:1px solid var(--border);background:var(--surface);color:var(--text-dim);cursor:pointer;display:flex;align-items:center;justify-content:center;position:relative}
-  .icon-btn:active{border-color:var(--accent);color:var(--accent)}
-  .icon-btn svg{width:14px;height:14px;fill:currentColor}
-  .dot{width:5px;height:5px;border-radius:50%;background:var(--red);position:absolute;top:-1px;right:-1px}
-  .dot.on{background:var(--green)}
-
-  /* Lang toggle - compact vertical */
-  .lang-toggle{display:flex;gap:0.2rem;background:var(--surface);border-radius:5px;padding:0.15rem;border:1px solid var(--border)}
-  .lang-btn{font-family:'JetBrains Mono',monospace;font-size:0.5rem;padding:0.2rem 0.4rem;border:none;background:transparent;color:var(--text-dim);border-radius:4px;cursor:pointer}
-  .lang-btn.active{background:var(--accent);color:var(--bg)}
+  .hdr{width:100%;display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:0.15rem;flex-shrink:0}
+  .hdr-left{display:flex;flex-direction:column}
+  .hdr-title{font-family:'JetBrains Mono',monospace;font-size:0.85rem;font-weight:600;color:var(--accent);letter-spacing:0.1em}
+  .hdr-sub{font-size:0.45rem;color:var(--text-dim);font-family:'JetBrains Mono',monospace;letter-spacing:0.05em}
+  .hdr-right{display:flex;flex-direction:column;align-items:flex-end;gap:0.25rem}
+  .hdr-icons{display:flex;gap:0.25rem}
+  .ib{width:28px;height:28px;border-radius:6px;border:1px solid var(--border);background:var(--surface);color:var(--text-dim);cursor:pointer;display:flex;align-items:center;justify-content:center;position:relative}
+  .ib:active{border-color:var(--accent);color:var(--accent)}
+  .ib svg{width:13px;height:13px;fill:currentColor}
+  .dt{width:5px;height:5px;border-radius:50%;background:var(--red);position:absolute;top:-1px;right:-1px}
+  .dt.on{background:var(--green)}
+  .lt{display:flex;gap:0.15rem;background:var(--surface);border-radius:4px;padding:0.1rem;border:1px solid var(--border)}
+  .lb{font-family:'JetBrains Mono',monospace;font-size:0.45rem;padding:0.15rem 0.35rem;border:none;background:transparent;color:var(--text-dim);border-radius:3px;cursor:pointer}
+  .lb.active{background:var(--accent);color:var(--bg)}
 
   /* Settings */
-  .settings-panel{width:100%;background:var(--surface);border:1px solid var(--border);border-radius:10px;padding:1rem;margin-bottom:0.5rem;display:none}
-  .settings-panel.open{display:block}
-  .settings-title{font-family:'JetBrains Mono',monospace;font-size:0.65rem;color:var(--accent);text-transform:uppercase;letter-spacing:0.1em;margin-bottom:0.8rem}
-  .field-group{margin-bottom:0.8rem}
-  .field-label{font-family:'JetBrains Mono',monospace;font-size:0.55rem;color:var(--text-dim);text-transform:uppercase;letter-spacing:0.08em;margin-bottom:0.3rem}
-  .field-input{width:100%;background:var(--bg);border:1px solid var(--border);border-radius:6px;padding:0.6rem;color:var(--text);font-family:'JetBrains Mono',monospace;font-size:0.7rem;outline:none}
-  .field-input:focus{border-color:var(--accent)}
-  .field-input::placeholder{color:var(--text-dim)}
-  .save-key-btn{font-family:'JetBrains Mono',monospace;font-size:0.6rem;color:var(--bg);background:var(--accent);border:none;border-radius:5px;padding:0.4rem 1rem;cursor:pointer}
-  .key-status{font-family:'JetBrains Mono',monospace;font-size:0.55rem;margin-top:0.3rem}
-  .key-status.ok{color:var(--green)}.key-status.err{color:var(--red)}
+  .sp{width:100%;background:var(--surface);border:1px solid var(--border);border-radius:10px;padding:0.8rem;margin-bottom:0.4rem;display:none;flex-shrink:0;max-height:50vh;overflow-y:auto}
+  .sp.open{display:block}
+  .sp-t{font-family:'JetBrains Mono',monospace;font-size:0.6rem;color:var(--accent);text-transform:uppercase;letter-spacing:0.1em;margin-bottom:0.6rem}
+  .fg{margin-bottom:0.6rem}
+  .fl{font-family:'JetBrains Mono',monospace;font-size:0.5rem;color:var(--text-dim);text-transform:uppercase;letter-spacing:0.08em;margin-bottom:0.25rem}
+  .fi{width:100%;background:var(--bg);border:1px solid var(--border);border-radius:5px;padding:0.5rem;color:var(--text);font-family:'JetBrains Mono',monospace;font-size:0.65rem;outline:none}
+  .fi:focus{border-color:var(--accent)}
+  .fi::placeholder{color:var(--text-dim)}
+  .sb{font-family:'JetBrains Mono',monospace;font-size:0.55rem;color:var(--bg);background:var(--accent);border:none;border-radius:4px;padding:0.35rem 0.8rem;cursor:pointer}
+  .ks{font-family:'JetBrains Mono',monospace;font-size:0.5rem;margin-top:0.25rem}
+  .ks.ok{color:var(--green)}.ks.err{color:var(--red)}
 
   /* Avatar */
-  .avatar-area{width:100%;position:relative;margin-bottom:0.2rem}
-  #avatarCanvas{width:100%;height:420px;display:block;border-radius:10px}
-  .avatar-loading{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);font-family:'JetBrains Mono',monospace;font-size:0.6rem;color:var(--text-dim)}
-  .avatar-state{position:absolute;bottom:4px;right:8px;font-family:'JetBrains Mono',monospace;font-size:0.45rem;color:var(--text-dim);background:rgba(15,17,23,0.7);padding:0.1rem 0.3rem;border-radius:3px;letter-spacing:0.08em;text-transform:uppercase}
+  .av{width:100%;flex:1;min-height:0;position:relative}
+  #avatarCanvas{width:100%;height:100%;display:block}
+  .av-load{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);font-family:'JetBrains Mono',monospace;font-size:0.6rem;color:var(--text-dim)}
 
-  /* Mic floating on hat */
-  .mic-float{position:absolute;top:8px;left:50%;transform:translateX(-50%);z-index:10}
-  .mic-btn{width:60px;height:60px;border-radius:50%;border:2px solid var(--border);background:rgba(26,29,39,0.85);color:var(--text-dim);cursor:pointer;display:flex;align-items:center;justify-content:center;-webkit-user-select:none;user-select:none;touch-action:manipulation;backdrop-filter:blur(4px);-webkit-backdrop-filter:blur(4px)}
-  .mic-btn:active{transform:scale(0.93)}
-  .mic-btn svg{width:28px;height:28px;fill:currentColor}
-  .mic-btn.listening{border-color:var(--red);color:var(--red);box-shadow:0 0 25px var(--red-glow);animation:pulse 1.5s ease-in-out infinite}
-  @keyframes pulse{0%,100%{transform:scale(1)}50%{transform:scale(1.05)}}
-  .mic-status{position:absolute;top:68px;left:50%;transform:translateX(-50%);font-family:'JetBrains Mono',monospace;font-size:0.55rem;color:var(--text-dim);white-space:nowrap;background:rgba(15,17,23,0.7);padding:0.1rem 0.4rem;border-radius:3px}
-  .mic-status.active{color:var(--red)}
+  /* Mic floating */
+  .mic-f{position:absolute;top:4px;left:50%;transform:translateX(-50%);z-index:10}
+  .mic-b{width:56px;height:56px;border-radius:50%;border:2px solid var(--border);background:rgba(26,29,39,0.85);color:var(--text-dim);cursor:pointer;display:flex;align-items:center;justify-content:center;-webkit-user-select:none;user-select:none;touch-action:manipulation;backdrop-filter:blur(4px);-webkit-backdrop-filter:blur(4px);transition:all 0.2s}
+  .mic-b:active{transform:scale(0.93)}
+  .mic-b svg{width:24px;height:24px;fill:currentColor}
+  .mic-b.on{border-color:var(--red);color:var(--red);box-shadow:0 0 20px var(--red-glow);animation:mp 1.5s ease-in-out infinite}
+  @keyframes mp{0%,100%{transform:scale(1)}50%{transform:scale(1.05)}}
+  .mic-s{position:absolute;top:62px;left:50%;transform:translateX(-50%);font-family:'JetBrains Mono',monospace;font-size:0.5rem;color:var(--text-dim);white-space:nowrap;background:rgba(15,17,23,0.7);padding:0.08rem 0.3rem;border-radius:3px}
+  .mic-s.on{color:var(--red)}
 
   /* Convo */
-  .convo-box{width:100%;background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:0.5rem 0.8rem;min-height:60px;max-height:120px;text-align:left;margin-bottom:0.5rem;overflow-y:auto;position:relative}
-  .convo-box.thinking{border-color:var(--gold)}
-  .convo-box.thinking::after{content:'';position:absolute;bottom:0;left:0;height:2px;background:var(--gold);animation:bl 1.5s ease-in-out infinite}
+  .cb{width:100%;background:var(--surface);border:1px solid var(--border);border-radius:10px;padding:0.5rem 0.7rem;max-height:110px;text-align:left;margin-top:0.3rem;overflow-y:auto;position:relative;flex-shrink:0}
+  .cb.th{border-color:var(--gold)}
+  .cb.th::after{content:'';position:absolute;bottom:0;left:0;height:2px;background:var(--gold);animation:bl 1.5s ease-in-out infinite}
   @keyframes bl{0%{width:0;left:0}50%{width:60%;left:20%}100%{width:0;left:100%}}
-  .convo-label{font-family:'JetBrains Mono',monospace;font-size:0.5rem;color:var(--text-dim);text-transform:uppercase;letter-spacing:0.1em;margin-bottom:0.5rem}
-  .msg{margin-bottom:0.5rem;padding:0.45rem 0.65rem;border-radius:9px;font-size:0.8rem;line-height:1.4;max-width:92%;word-break:break-word}
-  .msg.user{background:rgba(78,205,196,0.1);border:1px solid rgba(78,205,196,0.2);margin-left:auto;color:var(--accent);text-align:right}
-  .msg.bot{background:rgba(107,111,128,0.1);border:1px solid rgba(107,111,128,0.15);color:var(--text)}
-  .msg.bot.ask{background:rgba(240,192,64,0.08);border:1px solid rgba(240,192,64,0.2);color:var(--gold)}
-  .msg.bot.confirm{background:rgba(78,205,196,0.08);border:1px solid rgba(78,205,196,0.2)}
-  .msg.bot.saved{background:rgba(107,207,127,0.1);border:1px solid rgba(107,207,127,0.25);color:var(--green)}
-  .msg.bot.error{background:rgba(255,107,107,0.08);border:1px solid rgba(255,107,107,0.2);color:var(--red)}
-  .msg.bot.joke{background:rgba(240,192,64,0.06);border:1px solid rgba(240,192,64,0.15);color:var(--gold);font-style:italic}
-  .confirm-label{font-family:'JetBrains Mono',monospace;font-size:0.65rem;display:block;margin-top:0.2rem}
-  .confirm-detail{font-family:'JetBrains Mono',monospace;font-size:0.55rem;color:var(--text-dim);display:block;margin-top:0.1rem}
-  .hint-text{font-size:0.6rem;color:var(--text-dim);font-style:italic;margin-top:0.2rem}
+  .cl{font-family:'JetBrains Mono',monospace;font-size:0.45rem;color:var(--text-dim);text-transform:uppercase;letter-spacing:0.1em;margin-bottom:0.3rem}
+  .m{margin-bottom:0.35rem;padding:0.35rem 0.55rem;border-radius:8px;font-size:0.75rem;line-height:1.35;max-width:92%;word-break:break-word}
+  .m.u{background:rgba(78,205,196,0.1);border:1px solid rgba(78,205,196,0.2);margin-left:auto;color:var(--accent);text-align:right}
+  .m.b{background:rgba(107,111,128,0.1);border:1px solid rgba(107,111,128,0.15);color:var(--text)}
+  .m.b.ask{background:rgba(240,192,64,0.08);border:1px solid rgba(240,192,64,0.2);color:var(--gold)}
+  .m.b.cfm{background:rgba(78,205,196,0.08);border:1px solid rgba(78,205,196,0.2)}
+  .m.b.ok{background:rgba(107,207,127,0.1);border:1px solid rgba(107,207,127,0.25);color:var(--green)}
+  .m.b.err{background:rgba(255,107,107,0.08);border:1px solid rgba(255,107,107,0.2);color:var(--red)}
+  .m.b.jk{background:rgba(240,192,64,0.06);border:1px solid rgba(240,192,64,0.15);color:var(--gold);font-style:italic;font-size:0.7rem}
+  .cd{font-family:'JetBrains Mono',monospace;font-size:0.55rem;color:var(--text-dim);display:block;margin-top:0.1rem}
+  .ht{font-size:0.55rem;color:var(--text-dim);font-style:italic;margin-top:0.15rem}
 
-  .log{width:100%;flex:1;overflow-y:auto}
-  .log-entry{font-family:'JetBrains Mono',monospace;font-size:0.5rem;color:var(--text-dim);padding:0.25rem 0;border-bottom:1px solid var(--border);display:flex;gap:0.4rem}
-  .log-entry .time{color:var(--accent);flex-shrink:0}
-  .log-entry .lmsg{color:var(--text);line-height:1.3}
-  .unsupported{background:rgba(255,107,107,0.1);border:1px solid var(--red);border-radius:8px;padding:0.7rem;font-size:0.75rem;color:var(--red);margin-bottom:0.5rem;width:100%;text-align:center}
-  .btn-row{display:flex;gap:0.4rem;margin-top:0.4rem;width:100%}
-  .clear-btn,.cancel-btn{font-family:'JetBrains Mono',monospace;font-size:0.55rem;background:none;border-radius:5px;padding:0.3rem 0.6rem;cursor:pointer}
-  .clear-btn{color:var(--text-dim);border:1px solid var(--border)}
-  .cancel-btn{color:var(--red);border:1px solid rgba(255,107,107,0.3)}
+  .br{display:flex;gap:0.3rem;margin-top:0.3rem;width:100%;flex-shrink:0}
+  .br button{font-family:'JetBrains Mono',monospace;font-size:0.5rem;background:none;border-radius:4px;padding:0.25rem 0.5rem;cursor:pointer}
+  .br .c1{color:var(--text-dim);border:1px solid var(--border)}
+  .br .c2{color:var(--red);border:1px solid rgba(255,107,107,0.3)}
+  .unsup{background:rgba(255,107,107,0.1);border:1px solid var(--red);border-radius:8px;padding:0.5rem;font-size:0.7rem;color:var(--red);margin-bottom:0.3rem;width:100%;text-align:center;flex-shrink:0}
 </style>
 </head>
 <body>
 <div class="container">
-  <div class="header-row">
-    <div class="header-left">
-      <div class="step-badge">Step 4 / 5</div>
-      <div class="header-title">ASISTENT</div>
-      <div class="header-sub">LilTeddy</div>
+  <div class="hdr">
+    <div class="hdr-left">
+      <div class="hdr-title">ASISTENT</div>
+      <div class="hdr-sub">LilTeddy</div>
     </div>
-    <div class="header-right">
-      <div class="header-icons">
-        <button class="icon-btn" id="googleSignIn" title="Calendar">
-          <svg viewBox="0 0 24 24"><path fill="#4285F4" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92a5.06 5.06 0 0 1-2.2 3.32v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.1z"/><path fill="#34A853" d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"/><path fill="#FBBC05" d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z"/><path fill="#EA4335" d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z"/></svg>
-          <div class="dot" id="gcalDot"></div>
-        </button>
-        <button class="icon-btn" id="settingsBtn">
-          <svg viewBox="0 0 24 24"><path d="M19.14,12.94c0.04-0.3,0.06-0.61,0.06-0.94c0-0.32-0.02-0.64-0.07-0.94l2.03-1.58c0.18-0.14,0.23-0.41,0.12-0.61l-1.92-3.32c-0.12-0.22-0.37-0.29-0.59-0.22l-2.39,0.96c-0.5-0.38-1.03-0.7-1.62-0.94L14.4,2.81c-0.04-0.24-0.24-0.41-0.48-0.41h-3.84c-0.24,0-0.43,0.17-0.47,0.41L9.25,5.35C8.66,5.59,8.12,5.92,7.63,6.29L5.24,5.33c-0.22-0.08-0.47,0-0.59,0.22L2.74,8.87C2.62,9.08,2.66,9.34,2.86,9.48l2.03,1.58C4.84,11.36,4.8,11.69,4.8,12s0.02,0.64,0.07,0.94l-2.03,1.58c-0.18,0.14-0.23,0.41-0.12,0.61l1.92,3.32c0.12,0.22,0.37,0.29,0.59,0.22l2.39-0.96c0.5,0.38,1.03,0.7,1.62,0.94l0.36,2.54c0.05,0.24,0.24,0.41,0.48,0.41h3.84c0.24,0,0.44-0.17,0.47-0.41l0.36-2.54c0.59-0.24,1.13-0.56,1.62-0.94l2.39,0.96c0.22,0.08,0.47,0,0.59-0.22l1.92-3.32c0.12-0.22,0.07-0.47-0.12-0.61L19.14,12.94z M12,15.6c-1.98,0-3.6-1.62-3.6-3.6s1.62-3.6,3.6-3.6s3.6,1.62,3.6,3.6S13.98,15.6,12,15.6z"/></svg>
-          <div class="dot" id="apiDot"></div>
-        </button>
+    <div class="hdr-right">
+      <div class="hdr-icons">
+        <button class="ib" id="gBtn" title="Calendar"><svg viewBox="0 0 24 24"><path fill="#4285F4" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92a5.06 5.06 0 0 1-2.2 3.32v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.1z"/><path fill="#34A853" d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"/><path fill="#FBBC05" d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z"/><path fill="#EA4335" d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z"/></svg><div class="dt" id="gDot"></div></button>
+        <button class="ib" id="sBtn"><svg viewBox="0 0 24 24"><path d="M19.14,12.94c0.04-0.3,0.06-0.61,0.06-0.94c0-0.32-0.02-0.64-0.07-0.94l2.03-1.58c0.18-0.14,0.23-0.41,0.12-0.61l-1.92-3.32c-0.12-0.22-0.37-0.29-0.59-0.22l-2.39,0.96c-0.5-0.38-1.03-0.7-1.62-0.94L14.4,2.81c-0.04-0.24-0.24-0.41-0.48-0.41h-3.84c-0.24,0-0.43,0.17-0.47,0.41L9.25,5.35C8.66,5.59,8.12,5.92,7.63,6.29L5.24,5.33c-0.22-0.08-0.47,0-0.59,0.22L2.74,8.87C2.62,9.08,2.66,9.34,2.86,9.48l2.03,1.58C4.84,11.36,4.8,11.69,4.8,12s0.02,0.64,0.07,0.94l-2.03,1.58c-0.18,0.14-0.23,0.41-0.12,0.61l1.92,3.32c0.12,0.22,0.37,0.29,0.59,0.22l2.39-0.96c0.5,0.38,1.03,0.7,1.62,0.94l0.36,2.54c0.05,0.24,0.24,0.41,0.48,0.41h3.84c0.24,0,0.44-0.17,0.47-0.41l0.36-2.54c0.59-0.24,1.13-0.56,1.62-0.94l2.39,0.96c0.22,0.08,0.47,0,0.59-0.22l1.92-3.32c0.12-0.22,0.07-0.47-0.12-0.61L19.14,12.94z M12,15.6c-1.98,0-3.6-1.62-3.6-3.6s1.62-3.6,3.6-3.6s3.6,1.62,3.6,3.6S13.98,15.6,12,15.6z"/></svg><div class="dt" id="aDot"></div></button>
       </div>
-      <div class="lang-toggle">
-        <button class="lang-btn active" data-lang="hr-HR">BOS</button>
-        <button class="lang-btn" data-lang="sr-RS">SRP</button>
-        <button class="lang-btn" data-lang="en-US">ENG</button>
+      <div class="lt">
+        <button class="lb active" data-lang="hr-HR">BOS</button>
+        <button class="lb" data-lang="sr-RS">SRP</button>
+        <button class="lb" data-lang="en-US">ENG</button>
       </div>
     </div>
   </div>
 
-  <div class="settings-panel" id="settingsPanel">
-    <div class="settings-title">Postavke</div>
-    <div class="field-group">
-      <div class="field-label">Anthropic API Key</div>
-      <input type="password" class="field-input" id="apiKeyInput" placeholder="sk-ant-api03-..." autocomplete="off">
-    </div>
-    <div class="field-group">
-      <div class="field-label">Glas / Voice</div>
-      <select class="field-input" id="voiceSelect" style="padding:0.5rem;appearance:auto;"></select>
-      <button class="save-key-btn" id="testVoiceBtn" style="margin-top:0.4rem;background:var(--gold);font-size:0.5rem;padding:0.3rem 0.6rem;">Test</button>
-    </div>
-    <button class="save-key-btn" id="saveKeyBtn">Spremi</button>
-    <div class="key-status" id="keyStatus"></div>
+  <!-- Settings -->
+  <div class="sp" id="sP">
+    <div class="sp-t">Postavke</div>
+    <div class="fg"><div class="fl">Anthropic API Key</div><input type="password" class="fi" id="aIn" placeholder="sk-ant-..." autocomplete="off"></div>
+    <button class="sb" id="svBtn">Spremi</button>
+    <div class="ks" id="kSt"></div>
   </div>
 
-  <div id="unsupported" class="unsupported" style="display:none;"></div>
+  <div id="unsup" class="unsup" style="display:none"></div>
 
-  <!-- Avatar with floating mic -->
-  <div class="avatar-area" id="avatarArea">
+  <!-- Avatar -->
+  <div class="av" id="avArea">
     <canvas id="avatarCanvas"></canvas>
-    <div class="avatar-loading" id="avatarLoading">učitavam LilTeddy...</div>
-    <div class="avatar-state" id="avatarStateLabel">idle</div>
-    <div class="mic-float">
-      <button class="mic-btn" id="micBtn" aria-label="Mikrofon">
-        <svg viewBox="0 0 24 24"><path d="M12 14c1.66 0 3-1.34 3-3V5c0-1.66-1.34-3-3-3S9 3.34 9 5v6c0 1.66 1.34 3 3 3zm-1-9c0-.55.45-1 1-1s1 .45 1 1v6c0 .55-.45 1-1 1s-1-.45-1-1V5z"/><path d="M17 11c0 2.76-2.24 5-5 5s-5-2.24-5-5H5c0 3.53 2.61 6.43 6 6.92V21h2v-3.08c3.39-.49 6-3.39 6-6.92h-2z"/></svg>
-      </button>
-      <div class="mic-status" id="status">tap</div>
+    <div class="av-load" id="avLoad">učitavam LilTeddy...</div>
+    <div class="mic-f">
+      <button class="mic-b" id="micB"><svg viewBox="0 0 24 24"><path d="M12 14c1.66 0 3-1.34 3-3V5c0-1.66-1.34-3-3-3S9 3.34 9 5v6c0 1.66 1.34 3 3 3zm-1-9c0-.55.45-1 1-1s1 .45 1 1v6c0 .55-.45 1-1 1s-1-.45-1-1V5z"/><path d="M17 11c0 2.76-2.24 5-5 5s-5-2.24-5-5H5c0 3.53 2.61 6.43 6 6.92V21h2v-3.08c3.39-.49 6-3.39 6-6.92h-2z"/></svg></button>
+      <div class="mic-s" id="micSt">tap</div>
     </div>
   </div>
 
-  <div class="convo-box" id="convoBox">
-    <div class="convo-label">razgovor</div>
-    <div id="convoMessages"></div>
+  <!-- Chat -->
+  <div class="cb" id="cBox">
+    <div class="cl">razgovor</div>
+    <div id="cMsg"></div>
   </div>
-
-  <div class="btn-row">
-    <button class="clear-btn" id="clearBtn">očisti</button>
-    <button class="cancel-btn" id="cancelBtn">otkaži</button>
+  <div class="br">
+    <button class="c1" id="clrB">očisti</button>
+    <button class="c2" id="canB">otkaži</button>
   </div>
-  <div class="log" id="log"></div>
 </div>
 
 <script src="https://accounts.google.com/gsi/client" async defer></script>
@@ -170,229 +141,201 @@
 {"imports":{"three":"https://cdn.jsdelivr.net/npm/three@0.162.0/build/three.module.js","three/addons/":"https://cdn.jsdelivr.net/npm/three@0.162.0/examples/jsm/","@pixiv/three-vrm":"https://cdn.jsdelivr.net/npm/@pixiv/three-vrm@3.2.0/lib/three-vrm.module.min.js"}}
 </script>
 
-<!-- Avatar module -->
+<!-- ======== AVATAR MODULE ======== -->
 <script type="module">
 import * as THREE from 'three';
 import { GLTFLoader } from 'three/addons/loaders/GLTFLoader.js';
 import { VRMLoaderPlugin, VRMUtils } from '@pixiv/three-vrm';
 
 const canvas = document.getElementById('avatarCanvas');
-const container = document.getElementById('avatarArea');
-const loadingEl = document.getElementById('avatarLoading');
-const stateLabel = document.getElementById('avatarStateLabel');
+const container = document.getElementById('avArea');
+const loadEl = document.getElementById('avLoad');
 
 const renderer = new THREE.WebGLRenderer({canvas, alpha:true, antialias:true});
 renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
 renderer.outputColorSpace = THREE.SRGBColorSpace;
 
 const scene = new THREE.Scene();
-const camera = new THREE.PerspectiveCamera(22, 1, 0.1, 20);
-camera.position.set(0, 0.7, 4.0);
-camera.lookAt(0, 0.7, 0);
+const camera = new THREE.PerspectiveCamera(20, 1, 0.1, 20);
+camera.position.set(0, 0.65, 4.2);
+camera.lookAt(0, 0.65, 0);
 
 function resize(){
-  const w=container.clientWidth, h=420;
-  renderer.setSize(w,h);
-  camera.aspect=w/h;
+  const w = container.clientWidth;
+  const h = container.clientHeight;
+  if(w<1||h<1) return;
+  renderer.setSize(w, h);
+  camera.aspect = w/h;
   camera.updateProjectionMatrix();
 }
 
 scene.add(new THREE.AmbientLight(0xccccdd, 1.0));
-const key=new THREE.DirectionalLight(0xffeedd,1.2);key.position.set(1,2,2);scene.add(key);
-const fill=new THREE.DirectionalLight(0x4ecdc4,0.3);fill.position.set(-1,1,1);scene.add(fill);
-const rim=new THREE.DirectionalLight(0x4ecdc4,0.4);rim.position.set(0,1,-2);scene.add(rim);
+const kl = new THREE.DirectionalLight(0xffeedd,1.2); kl.position.set(1,2,2); scene.add(kl);
+const fl = new THREE.DirectionalLight(0x4ecdc4,0.3); fl.position.set(-1,1,1); scene.add(fl);
+const rl = new THREE.DirectionalLight(0x4ecdc4,0.4); rl.position.set(0,1,-2); scene.add(rl);
 
 const loader = new GLTFLoader();
 loader.register(p => new VRMLoaderPlugin(p));
 
-let vrm=null;
-let avatarState='idle';
-const clock=new THREE.Clock();
-let blinkTimer=0, nextBlink=2+Math.random()*3;
-let mouthPhase=0, breathPhase=0, posePhase=0;
-let poseBlend=0; // 0=bounce, 1=leanback for speaking cycle
+let vrm = null;
+let avState = 'idle';
+const clock = new THREE.Clock();
+let blinkT=0, nextBlink=2+Math.random()*3;
+let mouthP=0, breathP=0, poseP=0;
 
-// Bone pose targets (we lerp toward these)
-const POSES = {
-  idle: { // cross arms
-    spine: [0,0,0],
-    rightUpperArm: [0.5, 0, -0.8],
-    rightLowerArm: [0, -1.4, 0],
-    leftUpperArm: [0.5, 0, 0.8],
-    leftLowerArm: [0, 1.4, 0],
-    head: [0,0,0]
-  },
-  bounce: {
-    spine: [0.08,0,0],
-    rightUpperArm: [0.3, 0, -1.2],
-    rightLowerArm: [0, -0.3, 0],
-    leftUpperArm: [0.3, 0, 1.2],
-    leftLowerArm: [0, 0.3, 0],
-    head: [0,0,0]
-  },
-  leanback: {
-    spine: [-0.12,0,0],
-    rightUpperArm: [-0.3, 0, -1.5],
-    rightLowerArm: [0, -0.2, 0],
-    leftUpperArm: [0.6, 0, 0.5],
-    leftLowerArm: [0, 1.0, 0],
-    head: [-0.1,0,0]
-  },
-  point: {
-    spine: [0.05,0,0],
-    rightUpperArm: [0.8, 0, -0.3],
-    rightLowerArm: [0, 0, 0],
-    leftUpperArm: [0.2, 0, 0.8],
-    leftLowerArm: [0, 1.2, 0],
-    head: [0,0,0]
-  },
-  wave: {
-    spine: [0,0,0],
-    rightUpperArm: [-0.5, 0, -1.8],
-    rightLowerArm: [0, -0.8, 0],
-    leftUpperArm: [-0.5, 0, 1.8],
-    leftLowerArm: [0, 0.8, 0],
-    head: [0,0,0]
-  }
-};
-
-let currentPoseTargets = POSES.idle;
-
-function getBone(name) {
-  if (!vrm?.humanoid) return null;
-  return vrm.humanoid.getNormalizedBoneNode(name);
+// Safe bone access
+function bone(name) {
+  return vrm?.humanoid?.getNormalizedBoneNode(name) || null;
 }
 
-function lerpBone(boneName, target, speed, delta) {
-  const bone = getBone(boneName);
-  if (!bone) return;
-  const s = 1 - Math.pow(0.001, delta * speed);
-  bone.rotation.x += (target[0] - bone.rotation.x) * s;
-  bone.rotation.y += (target[1] - bone.rotation.y) * s;
-  bone.rotation.z += (target[2] - bone.rotation.z) * s;
+// Safe expression
+function expr(name, val) {
+  try { vrm?.expressionManager?.setValue(name, val); } catch(e) {}
 }
 
-function setExpr(name, val) {
-  if (!vrm?.expressionManager) return;
-  try { vrm.expressionManager.setValue(name, val); } catch(e) {}
+function resetExpr() {
+  ['happy','angry','sad','surprised','relaxed','aa','ih','ou','ee','oh','blink','blinkLeft','blinkRight','lookUp','lookDown','lookLeft','lookRight'].forEach(n => expr(n, 0));
 }
 
-function resetExpressions() {
-  ['happy','angry','sad','surprised','aa','ih','ou','ee','oh','a','i','u','e','o','blink','blinkLeft','blinkRight','lookUp','lookDown','lookLeft','lookRight'].forEach(n=>setExpr(n,0));
+// Lerp a bone rotation toward target
+function lerpBone(name, tx, ty, tz, speed, dt) {
+  const b = bone(name);
+  if(!b) return;
+  const s = 1 - Math.pow(0.01, dt * speed);
+  b.rotation.x += (tx - b.rotation.x) * s;
+  b.rotation.y += (ty - b.rotation.y) * s;
+  b.rotation.z += (tz - b.rotation.z) * s;
 }
 
 loader.load('./LilTeddy.vrm',
   (gltf) => {
     vrm = gltf.userData.vrm;
-    VRMUtils.removeUnnecessaryJoints(vrm.scene);
+    try { VRMUtils.combineSkeletons(vrm.scene); } catch(e) {
+      try { VRMUtils.removeUnnecessaryJoints(vrm.scene); } catch(e2) {}
+    }
     scene.add(vrm.scene);
     vrm.scene.rotation.y = Math.PI;
 
-    // Frame full body — use manual camera position
-    loadingEl.style.display = 'none';
-    if (vrm.expressionManager) {
-      console.log('Expressions:', vrm.expressionManager.expressions.map(e=>e.expressionName));
-    }
     // Log available bones
-    if (vrm.humanoid) {
-      const boneNames = [];
-      for (const [name] of vrm.humanoid.humanBones) boneNames.push(name);
-      console.log('Bones:', boneNames);
-    }
-    // Trigger greeting after load
-    if (window.onTeddyReady) window.onTeddyReady();
+    const testBones = ['hips','spine','chest','upperChest','neck','head','leftShoulder','rightShoulder','leftUpperArm','leftLowerArm','leftHand','rightUpperArm','rightLowerArm','rightHand','leftUpperLeg','leftLowerLeg','leftFoot','rightUpperLeg','rightLowerLeg','rightFoot'];
+    const found = [];
+    testBones.forEach(n => { if(bone(n)) found.push(n); });
+    console.log('Available bones:', found);
+    console.log('Expressions:', vrm.expressionManager?.expressions?.map(e=>e.expressionName) || []);
+
+    loadEl.style.display = 'none';
+    if(window.onTeddyReady) window.onTeddyReady();
   },
-  (p) => { if(p.total>0) loadingEl.textContent=`učitavam... ${Math.round(p.loaded/p.total*100)}%`; },
-  (e) => { loadingEl.textContent='❌ greška'; loadingEl.style.color='#ff6b6b'; console.error(e); }
+  (p) => { if(p.total>0) loadEl.textContent = `učitavam... ${Math.round(p.loaded/p.total*100)}%`; },
+  (e) => { loadEl.textContent = '❌ greška'; loadEl.style.color='#ff6b6b'; console.error(e); }
 );
 
 function animate() {
   requestAnimationFrame(animate);
-  const delta = clock.getDelta();
-  const elapsed = clock.getElapsedTime();
-  if (!vrm) { renderer.render(scene,camera); return; }
+  const dt = clock.getDelta();
+  const t = clock.getElapsedTime();
+  if(!vrm){renderer.render(scene,camera);return;}
 
   // Breathing
-  breathPhase += delta*1.2;
-  vrm.scene.position.y = Math.sin(breathPhase)*0.005;
+  breathP += dt * 1.2;
+  vrm.scene.position.y = Math.sin(breathP) * 0.004;
 
   // Blinking
-  blinkTimer+=delta;
-  if(blinkTimer>nextBlink){setExpr('blink',1);setExpr('blinkLeft',1);setExpr('blinkRight',1);setTimeout(()=>{setExpr('blink',0);setExpr('blinkLeft',0);setExpr('blinkRight',0);},120);blinkTimer=0;nextBlink=2+Math.random()*4;}
+  blinkT += dt;
+  if(blinkT > nextBlink){
+    expr('blink',1); expr('blinkLeft',1); expr('blinkRight',1);
+    setTimeout(()=>{expr('blink',0);expr('blinkLeft',0);expr('blinkRight',0);},130);
+    blinkT=0; nextBlink=2+Math.random()*4;
+  }
 
-  // Pose animation
-  const lerpSpeed = 3;
+  const sp = 3; // lerp speed
 
-  switch(avatarState) {
-    case 'idle':
-      currentPoseTargets = POSES.idle;
-      // Subtle sway
-      if(getBone('spine')){
-        const sway = Math.sin(elapsed*0.6)*0.02;
-        currentPoseTargets = {...POSES.idle, spine:[0,sway,0]};
-      }
+  switch(avState) {
+    case 'idle': // Cross arms — arms folded in front
+      lerpBone('spine', 0, Math.sin(t*0.5)*0.015, 0, sp, dt);
+      lerpBone('rightUpperArm', 0.4, 0, 0.8, sp, dt);
+      lerpBone('rightLowerArm', 0, 0, 1.3, sp, dt);
+      lerpBone('leftUpperArm', 0.4, 0, -0.8, sp, dt);
+      lerpBone('leftLowerArm', 0, 0, -1.3, sp, dt);
+      lerpBone('head', 0, Math.sin(t*0.3)*0.03, 0, sp, dt);
+      expr('relaxed', 0.2);
       break;
 
     case 'listening':
-      currentPoseTargets = POSES.idle;
-      setExpr('happy', 0.15);
+      lerpBone('spine', 0.03, 0, 0, sp, dt);
+      lerpBone('rightUpperArm', 0.3, 0, 0.9, sp, dt);
+      lerpBone('rightLowerArm', 0, 0, 1.0, sp, dt);
+      lerpBone('leftUpperArm', 0.3, 0, -0.9, sp, dt);
+      lerpBone('leftLowerArm', 0, 0, -1.0, sp, dt);
+      lerpBone('head', 0.05, 0, Math.sin(t*2)*0.03, sp, dt);
+      expr('happy', 0.15);
       break;
 
     case 'thinking':
-      currentPoseTargets = POSES.idle;
-      setExpr('lookLeft', 0.4);
-      setExpr('lookUp', 0.2);
+      lerpBone('spine', 0, 0, 0.03, sp, dt);
+      lerpBone('head', 0, 0.1, 0.05, sp, dt);
+      lerpBone('rightUpperArm', 0.5, 0, 0.7, sp, dt);
+      lerpBone('rightLowerArm', 0.3, 0, 1.5, sp, dt);
+      lerpBone('leftUpperArm', 0.3, 0, -0.9, sp, dt);
+      lerpBone('leftLowerArm', 0, 0, -1.0, sp, dt);
+      expr('lookLeft', 0.3); expr('lookUp', 0.2);
       break;
 
-    case 'speaking':
-      // Cycle between bounce and leanback
-      posePhase += delta * 0.8;
-      poseBlend = (Math.sin(posePhase) + 1) / 2; // 0-1 oscillation
-      currentPoseTargets = {};
-      for (const bone in POSES.bounce) {
-        currentPoseTargets[bone] = POSES.bounce[bone].map((v,i) =>
-          v + (POSES.leanback[bone][i] - v) * poseBlend
-        );
-      }
-      // Mouth animation
-      mouthPhase += delta*10;
-      setExpr('aa', Math.max(0, Math.sin(mouthPhase)*0.5));
-      setExpr('a', Math.max(0, Math.sin(mouthPhase)*0.5));
-      setExpr('oh', Math.max(0, Math.sin(mouthPhase*0.7+1)*0.3));
-      setExpr('o', Math.max(0, Math.sin(mouthPhase*0.7+1)*0.3));
-      setExpr('happy', 0.15);
-      // Head bob
-      if(getBone('head')){
-        const bob = Math.sin(elapsed*3)*0.04;
-        currentPoseTargets.head = [bob, Math.sin(elapsed*1.5)*0.03, 0];
-      }
+    case 'speaking': // Cycle bounce + leanback
+      poseP += dt * 0.7;
+      const blend = (Math.sin(poseP) + 1) / 2;
+
+      // Bounce values
+      const bSpineX = 0.06;
+      const bRArmZ = 0.5, bLArmZ = -0.5;
+
+      // Leanback values
+      const lSpineX = -0.08;
+      const lRArmZ = 0.2, lLArmZ = -1.0;
+
+      const sX = bSpineX + (lSpineX - bSpineX) * blend;
+      const rZ = bRArmZ + (lRArmZ - bRArmZ) * blend;
+      const lZ = bLArmZ + (lLArmZ - bLArmZ) * blend;
+
+      lerpBone('spine', sX, 0, 0, sp, dt);
+      lerpBone('rightUpperArm', 0.2, 0, rZ, sp, dt);
+      lerpBone('rightLowerArm', -0.2, 0, 0.5, sp, dt);
+      lerpBone('leftUpperArm', 0.3, 0, lZ, sp, dt);
+      lerpBone('leftLowerArm', -0.1, 0, -0.6, sp, dt);
+      lerpBone('head', Math.sin(t*3)*0.04, Math.sin(t*1.5)*0.03, 0, sp, dt);
+
+      // Lip sync — cycle through vowels
+      mouthP += dt * 8;
+      const aa = Math.max(0, Math.sin(mouthP) * 0.6);
+      const oh = Math.max(0, Math.sin(mouthP * 0.7 + 1.5) * 0.4);
+      const ee = Math.max(0, Math.sin(mouthP * 1.3 + 3) * 0.3);
+      expr('aa', aa); expr('oh', oh); expr('ee', ee); expr('ih', ee * 0.5);
+      expr('happy', 0.15);
       break;
 
-    case 'saved':
-      currentPoseTargets = POSES.point;
-      setExpr('happy', 0.6);
+    case 'saved': // Point at camera
+      lerpBone('spine', 0.05, 0, 0, sp*1.5, dt);
+      lerpBone('rightUpperArm', 0.8, 0.3, 0.0, sp*1.5, dt);
+      lerpBone('rightLowerArm', -0.3, 0, 0, sp*1.5, dt);
+      lerpBone('leftUpperArm', 0.2, 0, -1.0, sp*1.5, dt);
+      lerpBone('leftLowerArm', 0, 0, -1.2, sp*1.5, dt);
+      lerpBone('head', 0, 0, 0, sp, dt);
+      expr('happy', 0.7);
       break;
 
-    case 'confused':
-      currentPoseTargets = POSES.wave;
-      // Wave animation
-      const waveAngle = Math.sin(elapsed*4)*0.3;
-      if(getBone('rightUpperArm')){
-        currentPoseTargets = {...POSES.wave,
-          rightUpperArm: [-0.5+waveAngle, 0, -1.8],
-          leftUpperArm: [-0.5-waveAngle, 0, 1.8]
-        };
-      }
-      setExpr('surprised', 0.3);
+    case 'confused': // Wave arms
+      const wv = Math.sin(t * 3) * 0.3;
+      lerpBone('spine', 0, 0, Math.sin(t*2)*0.04, sp, dt);
+      lerpBone('rightUpperArm', -0.3+wv, 0, -0.2, sp, dt);
+      lerpBone('rightLowerArm', -0.5, 0, 0.3, sp, dt);
+      lerpBone('leftUpperArm', -0.3-wv, 0, 0.2, sp, dt);
+      lerpBone('leftLowerArm', -0.5, 0, -0.3, sp, dt);
+      lerpBone('head', 0, Math.sin(t*2)*0.08, Math.sin(t*3)*0.05, sp, dt);
+      expr('surprised', 0.4);
       break;
   }
 
-  // Apply pose lerp
-  for (const bone in currentPoseTargets) {
-    lerpBone(bone, currentPoseTargets[bone], lerpSpeed, delta);
-  }
-
-  vrm.update(delta);
+  vrm.update(dt);
   renderer.render(scene, camera);
 }
 
@@ -400,382 +343,368 @@ resize();
 window.addEventListener('resize', resize);
 animate();
 
-window.setAvatarState = function(s) {
-  resetExpressions();
-  avatarState = s;
-  mouthPhase = 0;
-  posePhase = 0;
-  stateLabel.textContent = s;
-};
+window.setAvatarState = function(s) { resetExpr(); avState = s; mouthP=0; poseP=0; };
 </script>
 
-<!-- Main logic -->
+<!-- ======== MAIN APP LOGIC ======== -->
 <script>
-const GOOGLE_CLIENT_ID='930740380202-5cub8gtuk2joli9kevbhird3o2ph6vpa.apps.googleusercontent.com';
-const CALENDAR_SCOPE='https://www.googleapis.com/auth/calendar.events';
+// ---- Config ----
+const GC_ID = '930740380202-5cub8gtuk2joli9kevbhird3o2ph6vpa.apps.googleusercontent.com';
+const GC_SCOPE = 'https://www.googleapis.com/auth/calendar.events';
+const TTS_KEY = 'AIzaSyBnoRSIZhd9oVzbDwUPEXL9WsEIGzVn79M';
+const TTS_VOICE = 'sr-RS-Chirp3-HD-Puck';
 
+// ---- DOM ----
 const $=id=>document.getElementById(id);
-const micBtn=$('micBtn'),statusEl=$('status'),logEl=$('log'),unsupportedEl=$('unsupported');
-const langBtns=document.querySelectorAll('.lang-btn');
-const settingsBtn=$('settingsBtn'),settingsPanel=$('settingsPanel');
-const apiKeyInput=$('apiKeyInput'),saveKeyBtn=$('saveKeyBtn'),keyStatus=$('keyStatus');
-const apiDot=$('apiDot'),convoBox=$('convoBox'),convoMessages=$('convoMessages');
-const clearBtn=$('clearBtn'),cancelBtn=$('cancelBtn');
-const googleSignIn=$('googleSignIn'),gcalDot=$('gcalDot');
+const micB=$('micB'), micSt=$('micSt'), cBox=$('cBox'), cMsg=$('cMsg');
+const sBtn=$('sBtn'), sP=$('sP'), aIn=$('aIn'), svBtn=$('svBtn'), kSt=$('kSt'), aDot=$('aDot');
+const gBtn=$('gBtn'), gDot=$('gDot');
+const clrB=$('clrB'), canB=$('canB'), unsup=$('unsup');
+const langBtns = document.querySelectorAll('.lb');
 
-let currentLang='hr-HR',isListening=false,apiKey=localStorage.getItem('asistent_api_key')||'';
-let brainBusy=false,restartTimer=null,state='IDLE';
-let pendingReminder={message:'',date:'',time:'',label:''};
-let googleAccessToken=null,tokenClient=null;
-let idleTimer=null, lastInteraction=Date.now();
+// ---- State ----
+let lang='hr-HR', listening=false, apiKey=localStorage.getItem('asistent_api_key')||'';
+let busy=false, restartT=null, st='IDLE';
+let pend={msg:'',date:'',time:'',label:''};
+let gToken=null, tClient=null;
+let idleT=null, lastAct=Date.now();
+let currentAudio=null;
 
-function avatar(s){if(window.setAvatarState)window.setAvatarState(s);}
+function av(s){if(window.setAvatarState)window.setAvatarState(s);}
 function esc(s){const d=document.createElement('div');d.textContent=s||'';return d.innerHTML;}
 
-// ---- TTS with voice picker ----
-let ttsVoice = null;
-const voiceSelect = $('voiceSelect');
-const testVoiceBtn = $('testVoiceBtn');
-const savedVoiceName = localStorage.getItem('asistent_voice') || '';
-
-function populateVoices() {
-  const voices = speechSynthesis.getVoices();
-  voiceSelect.innerHTML = '';
-
-  // Prioritize HR/SR/BS voices at top, then all others
-  const balkanVoices = voices.filter(v => /^(hr|sr|bs)/i.test(v.lang));
-  const otherVoices = voices.filter(v => !/^(hr|sr|bs)/i.test(v.lang));
-
-  const addOption = (v, group) => {
-    const opt = document.createElement('option');
-    opt.value = v.name;
-    opt.textContent = `${v.name} (${v.lang})`;
-    if (group) opt.textContent = `★ ${opt.textContent}`;
-    voiceSelect.appendChild(opt);
-  };
-
-  balkanVoices.forEach(v => addOption(v, true));
-  if (balkanVoices.length > 0 && otherVoices.length > 0) {
-    const sep = document.createElement('option');
-    sep.disabled = true;
-    sep.textContent = '───────────';
-    voiceSelect.appendChild(sep);
-  }
-  otherVoices.forEach(v => addOption(v, false));
-
-  // Restore saved selection
-  if (savedVoiceName) {
-    const match = voices.find(v => v.name === savedVoiceName);
-    if (match) { voiceSelect.value = match.name; ttsVoice = match; }
-  }
-
-  // Auto-select best balkan voice if no saved choice
-  if (!ttsVoice && balkanVoices.length > 0) {
-    // Prefer male voices (often contain "Male" or don't contain "Female")
-    const male = balkanVoices.find(v => /male/i.test(v.name) && !/female/i.test(v.name));
-    ttsVoice = male || balkanVoices[0];
-    voiceSelect.value = ttsVoice.name;
-  }
-
-  if (ttsVoice) console.log('TTS voice:', ttsVoice.name, ttsVoice.lang);
-}
-
-voiceSelect.addEventListener('change', () => {
-  const voices = speechSynthesis.getVoices();
-  ttsVoice = voices.find(v => v.name === voiceSelect.value) || null;
-  localStorage.setItem('asistent_voice', voiceSelect.value);
-  addLog('🔊 Glas: ' + (ttsVoice?.name || 'default'));
-});
-
-testVoiceBtn.addEventListener('click', () => {
-  speak("Zdravo, ja sam LilTeddy. Kako zvučim?");
-});
-
-speechSynthesis.onvoiceschanged = populateVoices;
-setTimeout(populateVoices, 500);
-setTimeout(populateVoices, 1500); // retry for slow-loading voices
-
+// ---- TTS: Google Cloud with browser fallback ----
 function speak(text, onEnd) {
+  if(currentAudio){currentAudio.pause();currentAudio=null;}
   speechSynthesis.cancel();
-  const u = new SpeechSynthesisUtterance(text);
-  if (ttsVoice) u.voice = ttsVoice;
-  u.lang = 'hr-HR';
-  u.rate = 0.85;
-  u.pitch = 1.15;
-  u.onend = () => { if(onEnd) onEnd(); };
-  u.onerror = () => { if(onEnd) onEnd(); };
-  speechSynthesis.speak(u);
-}
 
-function teddySay(text, msgClass, afterState) {
-  avatar('speaking');
-  addBotMsg(text, msgClass);
-  speak(text, () => {
-    if (afterState) avatar(afterState);
-    else if (state === 'IDLE') avatar('idle');
+  // Try Google Cloud TTS first
+  fetch(`https://texttospeech.googleapis.com/v1beta1/text:synthesize?key=${TTS_KEY}`, {
+    method:'POST',
+    headers:{'Content-Type':'application/json'},
+    body:JSON.stringify({
+      input:{text:text},
+      voice:{languageCode:'sr-RS',name:TTS_VOICE},
+      audioConfig:{audioEncoding:'MP3',speakingRate:1.0,pitch:0}
+    })
+  })
+  .then(r=>{if(!r.ok)throw new Error('TTS '+r.status);return r.json();})
+  .then(data=>{
+    const audio = new Audio('data:audio/mp3;base64,'+data.audioContent);
+    currentAudio = audio;
+    audio.onended = ()=>{currentAudio=null;if(onEnd)onEnd();};
+    audio.onerror = ()=>{currentAudio=null;if(onEnd)onEnd();};
+    audio.play().catch(()=>{if(onEnd)onEnd();});
+  })
+  .catch(e=>{
+    console.warn('Google TTS failed, using browser:', e);
+    // Fallback to browser TTS
+    const u=new SpeechSynthesisUtterance(text);
+    u.lang='hr-HR'; u.rate=0.9; u.pitch=1.1;
+    const voices=speechSynthesis.getVoices();
+    const hrV=voices.find(v=>v.lang.startsWith('hr'))||voices.find(v=>v.lang.startsWith('sr'));
+    if(hrV)u.voice=hrV;
+    u.onend=()=>{if(onEnd)onEnd();};
+    u.onerror=()=>{if(onEnd)onEnd();};
+    speechSynthesis.speak(u);
   });
-  resetIdleTimer();
 }
 
-// ---- Balkan jokes ----
+function teddySay(text, cls, afterState) {
+  av('speaking');
+  addBot(text, cls);
+  speak(text, ()=>{
+    if(afterState) av(afterState);
+    else if(st==='IDLE') av('idle');
+  });
+  resetIdle();
+}
+
+// ---- Jokes ----
 const JOKES = [
-  "Pita žena muža: 'Dragi, šta bi radio da dobiješ na lotu?' Kaže on: 'Pola tebi, pola ljubavnici.' Žena: 'A koliko si uplatio?' On: 'Dva kona.'",
-  "Dođe Mujo kući ranije. Haso se sakrije u ormar. Mujo otvori ormar i kaže: 'Haso, šta radiš tu?' Haso: 'Vozim tramvaj, ne vidiš?'",
-  "Kaže Suljo Muji: 'Evo, ležim sa ženom u krevetu, zovem te, a telefon ti zauzet.' Mujo: 'Pa i meni je bilo zauzeto.'",
-  "Pita doktor pacijenta: 'Koliko pijete dnevno?' On kaže: 'Pa nekih tri litre.' Doktor: 'Vode?' On: 'Haha, dobra!'",
-  "Mujo pita Hasu: 'Šta je razlika između žene i teroriste?' Haso: 'Sa teroristom se može pregovarati.'",
-  "Žena pita muža: 'Kad bih ti rekla da sam spavala sa tvojim najboljim prijateljem, šta bi rekao?' Muž: 'Da si lezbejka.'",
-  "Kaže Fata Muji: 'Dragi, za naš odnos su potrebne tri stvari: komunikacija, komunikacija i komunikacija.' Mujo: 'Može, ali ko će platiti te tri prostitutke?'",
-  "Suljo se vratio sa ljekara. Žena pita: 'Šta je rekao doktor?' Suljo: 'Rekao da sam lav u krevetu.' Žena: 'To je rekao jer si mu pokazao samo jezik.'",
-  "Mujo ulazi u kafanu i viče: 'Piće za sve! Žena mi je upravo rodila!' Svi: 'Čestitamo! Dečko ili djevojčica?' Mujo: 'Račun.'",
-  "Kaže Mujo Hasi: 'Brate, žena mi traži nešto veliko i tvrdo za rođendan.' Haso: 'Kupi joj mermernu ploču.'",
-  "Pita žena muža: 'Zašto nikad ne vičeš moje ime u krevetu?' On: 'Neću da te budim.'",
-  "Suljo priča Muji: 'Komšinica me pozvala na kafu dok joj muž nije bio kući. Skinula se gola i rekla: uzmi šta hoćeš. Ja uzeo televizor.'",
-  "Mujo pita doktora: 'Doktore, hoću li moći svirati klavir poslije operacije?' Doktor: 'Naravno.' Mujo: 'Odlično, jer prije nisam mogao.'",
-  "Žena Muji: 'Dragi, prije svadbe si mi govorio da sam ti jedina.' Mujo: 'Pa jesi... jedina koja me trpi.'",
-  "Haso priča: 'Moja žena je anđeo.' Mujo: 'Srećo tvoja, moja je još živa.'",
-  "Dolazi Mujo kući u 3 ujutro. Fata pita: 'Gdje si bio!?' Mujo: 'Kod najljepše žene na svijetu.' Fata zaplače. Mujo: 'Pa kod tebe, otvori vrata!'",
-  "Suljo i Mujo na pecanju. Suljo uhvati zlatnu ribicu. Ribica: 'Ispuniću ti jednu želju.' Suljo: 'Hoću da mi je svaki dan petak.' Od tada mu žena dolazi samo petkom.",
-  "Kaže Fata prijateljici: 'Moj Mujo je životinja u krevetu.' Prijateljica: 'Oooo!' Fata: 'Da, hrče ko medvjed.'"
+  "Sportske discipline u BiH: dizanje kredita, preskakanje rata, plivanje u dugovima, trčanje za žirantima.",
+  "Žali se pijanac drugu: Znaš, ja sam vrlo rentabilan. Meni dnevno treba litar rakije, litar mlijeka i mačka. Ovaj ga pita: Pa šta će ti mačka? Pa treba neko da popije to mlijeko.",
+  "Ide čovjek pustinjom mrtav umoran i sretne beduina. Gdje ovdje ima vode? Beduin kaže: Ideš pravo u pravcu moje ruke i utorak skreneš lijevo.",
+  "Zaustavlja žena taxi. Molim do aerodroma. Nakon 10 minuta taxista: Vi ste treća trudnica danas koju vozim na aerodrom. Ma ja nisam trudna! A niste ni na aerodrom stigli, također.",
+  "Ide Fata i za njom Mujo. Hodža ih zaustavi: Što bolan Mujo, znaš da po kur'anu ide prvo čovjek pa onda žena? Mujo: Eee zaboravi ti to hodža, kur'an je pisan prije minskog polja.",
+  "Neka žena u kupovini, prodavač: Jedno jaje, jedna kifla, jedan paradajz, mali kaladont... Gospođo vi živite sami? Da, kako znate? Zato što ste ružna ko stvor.",
+  "Došao Mujo kod punice na večeru, pas ne skida pogled s njega. Punice zašto me vaš pas gleda? Ma on samo tako gleda kad neko jede iz njegovog tanjira.",
+  "Došao musliman u zapadnu Hercegovinu, vidi ženu i kaže: Bismila! A ona: Kako ne bi smila, djeca u školi, a Mate u Njemačkoj.",
+  "Teški narkoman dođe kući: Mama imam dobru i lošu vijest. Prvo dobru? Riješio sam se droge! A loša? Ne znam di sam je izgubio!",
+  "Vraća se Mujo pijan kući, Fata se dere: Pijanico! Mujo: Koliko puta sam te ovog mjeseca? Četiri puta. A koliko sam se napio? Jednom. Pa zašto me ne zoveš tim drugim imenom?",
+  "Zašto muškarci poslije šezdeset godina puštaju trbuh? Dižu spomenik palom borcu!",
+  "Chuck Norris je izbrisao Facebook iz prijatelja.",
+  "Dolazi plavuša u bus, vozač pita: Dokle ćete gospođo? A ona: Ja bih do sjedala jer jako sam umorna.",
+  "Iranski predsjednik poslao pismo Bushu sa kodiranim sadržajem: 370HSSV 0773H. FBI, CIA, NSA, niko ne može dekodirati. MI-6 pošalje fax: Recite predsjedniku da je držao pismo naopako.",
+  "Rado bih mužu kupila jednu lijepu kravatu koja bi istaknula njegove oči. Prodavačica: Svaka kravata muškarcu istakne oči, samo je treba dobro zategnuti.",
+  "Mujo čita novine: Žene dnevno izgovaraju 30 hiljada riječi a muškarci 15 hiljada. Fata: To je zato što muškarcima treba sve dvaput ponoviti. Mujo: Kako, kako?!",
+  "Pita učiteljica Ivicu kako je Tito dobio ime. Ivica: Puno je putovao i svima prstom pokazivao: ti to, a ti to!",
+  "Suljo zove Hasu da nauče španjolski, Fata će ih podučavati. Nakon mjesec dana pita Hasu šta je naučio. Haso: KARAM BA.",
+  "Došao Mujo na divlji zapad, postane revolveraš. Uđe u salun, priđe čovjeku sa zvijezdom: Ko si ti? Šerif. E da nisi musliman sad bih te odmah ubio.",
+  "Nakon operacije grudi doktor pita: Jeste li zadovoljni? Da ali želim malo krupnije oči. Nema problema, sestro pokažite gospođi račun.",
+  "Suljo priča komšiji: Komšinica me pozvala na kafu dok muž nije bio kući. Skinula se i rekla uzmi šta hoćeš. Ja uzeo televizor.",
+  "Haso priča: Moja žena je anđeo. Mujo: Srećo tvoja, moja je još živa."
 ];
-let lastJokeIdx = -1;
+let lastJoke=-1;
+function rndJoke(){let i;do{i=Math.floor(Math.random()*JOKES.length);}while(i===lastJoke&&JOKES.length>1);lastJoke=i;return JOKES[i];}
 
-function getRandomJoke() {
-  let idx;
-  do { idx = Math.floor(Math.random() * JOKES.length); } while (idx === lastJokeIdx && JOKES.length > 1);
-  lastJokeIdx = idx;
-  return JOKES[idx];
-}
-
-// ---- Idle timer ----
-function resetIdleTimer() {
-  lastInteraction = Date.now();
-  clearTimeout(idleTimer);
-  idleTimer = setTimeout(checkIdle, 22000);
-}
-
-function checkIdle() {
-  if (Date.now() - lastInteraction >= 20000 && state === 'IDLE' && !brainBusy) {
-    const joke = getRandomJoke();
-    addBotMsg(joke, 'joke');
-    avatar('speaking');
-    speak(joke, () => avatar('idle'));
-    resetIdleTimer();
-  }
-}
-
-// ---- Confused reactions ----
-const CONFUSED_LINES = [
+const CONFUSED=[
   "Ma šta kažeš, ne pričaj punih usta.",
   "Najla jesi li se to ti opet dočepala telefona?",
-  "Brate, to ni ja ne razumijem, a ja sam medvjed.",
+  "Brate to ni ja ne razumijem, a ja sam medvjed.",
   "Ponovi to ali ovaj put na ljudskom jeziku."
 ];
+function rndConfused(){return CONFUSED[Math.floor(Math.random()*CONFUSED.length)];}
 
-function getConfusedLine() {
-  return CONFUSED_LINES[Math.floor(Math.random() * CONFUSED_LINES.length)];
+// ---- Idle timer (25s) ----
+function resetIdle(){lastAct=Date.now();clearTimeout(idleT);idleT=setTimeout(checkIdle,26000);}
+function checkIdle(){
+  if(Date.now()-lastAct>=25000 && st==='IDLE' && !busy){
+    const j=rndJoke();
+    addBot(j,'jk');
+    av('speaking');
+    speak(j,()=>av('idle'));
+    resetIdle();
+  }
 }
 
-// ---- Logging / messages ----
-function addLog(msg){
-  const t=new Date().toLocaleTimeString('hr-HR',{hour:'2-digit',minute:'2-digit',second:'2-digit'});
-  const e=document.createElement('div');e.className='log-entry';
-  e.innerHTML=`<span class="time">${t}</span><span class="lmsg">${msg}</span>`;
-  logEl.prepend(e);while(logEl.children.length>15)logEl.removeChild(logEl.lastChild);
-}
+// ---- Messages ----
+function addBot(t,c){const d=document.createElement('div');d.className=`m b ${c||''}`.trim();d.innerHTML=t;cMsg.appendChild(d);cBox.scrollTop=cBox.scrollHeight;}
+function addUsr(t){const d=document.createElement('div');d.className='m u';d.textContent=t;cMsg.appendChild(d);cBox.scrollTop=cBox.scrollHeight;}
+function resetSt(){st='IDLE';pend={msg:'',date:'',time:'',label:''};av('idle');}
+function getNow(){const n=new Date(),d=['nedjelja','ponedjeljak','utorak','srijeda','četvrtak','petak','subota'];return{date:n.toISOString().split('T')[0],day:d[n.getDay()],time:n.toLocaleTimeString('hr-HR',{hour:'2-digit',minute:'2-digit'}),hour:n.getHours()};}
 
-function addMsg(t,type,cls){const d=document.createElement('div');d.className=`msg ${type} ${cls||''}`.trim();d.innerHTML=t;convoMessages.appendChild(d);convoBox.scrollTop=convoBox.scrollHeight;}
-function addUserMsg(t){addMsg(esc(t),'user','');}
-function addBotMsg(t,c){addMsg(t,'bot',c||'');}
-
-function resetState(){state='IDLE';pendingReminder={message:'',date:'',time:'',label:''};avatar('idle');}
-
-function getNow(){const n=new Date();const d=['nedjelja','ponedjeljak','utorak','srijeda','četvrtak','petak','subota'];return{date:n.toISOString().split('T')[0],day:d[n.getDay()],time:n.toLocaleTimeString('hr-HR',{hour:'2-digit',minute:'2-digit'})};}
-
-const YES_WORDS=new Set(['da','yes','jes','jest','okej','ok','oke','važi','može','spremi','sačuvaj','potvrdi','super','tako','tačno','jeste']);
-const NO_WORDS=new Set(['ne','no','nije','promijeni','promijeniti','promjena','change','nee','pogrešno','krivo','netačno','nazad','izmijeni']);
-function checkConfirm(t){const w=t.toLowerCase().replace(/[.,!?]/g,'').trim().split(/\s+/);if(w.some(x=>NO_WORDS.has(x)))return'no';if(w.some(x=>YES_WORDS.has(x)))return'yes';return'unknown';}
+// ---- Confirm matching ----
+const YES=new Set(['da','yes','jes','jest','okej','ok','oke','važi','može','spremi','sačuvaj','potvrdi','super','tako','tačno','jeste']);
+const NO=new Set(['ne','no','nije','promijeni','promijeniti','promjena','change','nee','pogrešno','krivo','netačno','nazad','izmijeni']);
+function chkCfm(t){const w=t.toLowerCase().replace(/[.,!?]/g,'').trim().split(/\s+/);if(w.some(x=>NO.has(x)))return'no';if(w.some(x=>YES.has(x)))return'yes';return'?';}
 
 // ---- API key ----
-function updateDot(){apiDot.className=apiKey?'dot on':'dot';}
-updateDot();if(apiKey)apiKeyInput.value=apiKey;
-settingsBtn.addEventListener('click',()=>{settingsPanel.classList.toggle('open');settingsBtn.classList.toggle('active');});
-saveKeyBtn.addEventListener('click',()=>{
-  const k=apiKeyInput.value.trim();if(!k){keyStatus.textContent='❌';keyStatus.className='key-status err';return;}
-  apiKey=k;localStorage.setItem('asistent_api_key',k);updateDot();
-  // Also save voice
-  if(voiceSelect.value) localStorage.setItem('asistent_voice', voiceSelect.value);
-  keyStatus.textContent='✅';keyStatus.className='key-status ok';
-  setTimeout(()=>{settingsPanel.classList.remove('open');settingsBtn.classList.remove('active');},600);
+function updDot(){aDot.className=apiKey?'dt on':'dt';}
+updDot();if(apiKey)aIn.value=apiKey;
+sBtn.addEventListener('click',()=>{sP.classList.toggle('open');sBtn.classList.toggle('active');});
+svBtn.addEventListener('click',()=>{
+  const k=aIn.value.trim();if(!k){kSt.textContent='❌';kSt.className='ks err';return;}
+  apiKey=k;localStorage.setItem('asistent_api_key',k);updDot();
+  kSt.textContent='✅';kSt.className='ks ok';
+  setTimeout(()=>{sP.classList.remove('open');sBtn.classList.remove('active');},500);
 });
 
 // ---- Google OAuth ----
-function initGoogleAuth(){
-  if(typeof google==='undefined'||!google.accounts){setTimeout(initGoogleAuth,500);return;}
-  tokenClient=google.accounts.oauth2.initTokenClient({
-    client_id:GOOGLE_CLIENT_ID,scope:CALENDAR_SCOPE,
-    callback:(r)=>{if(r.error){addLog('❌ Google: '+r.error);return;}googleAccessToken=r.access_token;gcalDot.className='dot on';addLog('✅ Calendar povezan');}
+function initG(){
+  if(typeof google==='undefined'||!google.accounts){setTimeout(initG,500);return;}
+  tClient=google.accounts.oauth2.initTokenClient({
+    client_id:GC_ID,scope:GC_SCOPE,
+    callback:r=>{if(r.error)return;gToken=r.access_token;gDot.className='dt on';}
   });
 }
-googleSignIn.addEventListener('click',()=>{
-  if(googleAccessToken){google.accounts.oauth2.revoke(googleAccessToken,()=>{googleAccessToken=null;gcalDot.className='dot';addLog('🔓 Odjava');});}
-  else if(tokenClient){tokenClient.requestAccessToken();}
+gBtn.addEventListener('click',()=>{
+  if(gToken){google.accounts.oauth2.revoke(gToken,()=>{gToken=null;gDot.className='dt';});}
+  else if(tClient)tClient.requestAccessToken();
 });
 
-async function createCalendarEvent(r){
-  if(!googleAccessToken)return false;
-  const start=new Date(`${r.date}T${r.time}:00`),end=new Date(start.getTime()+30*60*1000),tz=Intl.DateTimeFormat().resolvedOptions().timeZone;
+// ---- Calendar read ----
+async function fetchEvents(days){
+  if(!gToken) return null;
+  const now=new Date();
+  const start=new Date(now); start.setHours(0,0,0,0);
+  const end=new Date(start); end.setDate(end.getDate()+days);
+  end.setHours(23,59,59,999);
   try{
-    const res=await fetch('https://www.googleapis.com/calendar/v3/calendars/primary/events',{
-      method:'POST',headers:{'Authorization':`Bearer ${googleAccessToken}`,'Content-Type':'application/json'},
-      body:JSON.stringify({summary:r.label,description:`Podsjetnik: ${r.message}`,start:{dateTime:start.toISOString(),timeZone:tz},end:{dateTime:end.toISOString(),timeZone:tz},reminders:{useDefault:false,overrides:[{method:'popup',minutes:10},{method:'popup',minutes:0}]}})
+    const r=await fetch(`https://www.googleapis.com/calendar/v3/calendars/primary/events?timeMin=${start.toISOString()}&timeMax=${end.toISOString()}&singleEvents=true&orderBy=startTime`,{
+      headers:{'Authorization':`Bearer ${gToken}`}
     });
-    if(res.status===401){googleAccessToken=null;gcalDot.className='dot';return false;}
-    if(!res.ok)throw new Error((await res.json().catch(()=>({}))).error?.message||res.statusText);
-    addLog('📅 Calendar ✅');return true;
-  }catch(e){addLog('❌ Cal: '+e.message);return false;}
+    if(r.status===401){gToken=null;gDot.className='dt';return null;}
+    if(!r.ok) return null;
+    const data=await r.json();
+    return data.items||[];
+  }catch(e){return null;}
 }
 
-// ---- Save ----
-let reminders=JSON.parse(localStorage.getItem('asistent_reminders')||'[]');
-async function saveReminder(){
-  const r={...pendingReminder,createdAt:new Date().toISOString(),id:Date.now()};
-  reminders.push(r);localStorage.setItem('asistent_reminders',JSON.stringify(reminders));
-  let calOk=false;
-  if(googleAccessToken){convoBox.classList.add('thinking');calOk=await createCalendarEvent(r);convoBox.classList.remove('thinking');}
-  const note=calOk?'<span class="confirm-detail">📅 Calendar ✅</span>':googleAccessToken?'<span class="confirm-detail">⚠️ Calendar greška</span>':'<span class="confirm-detail">💾 Lokalno</span>';
+function formatEvents(events, label){
+  if(!events||events.length===0) return `${label}: Nemaš ništa zakazano. Uživaj.`;
+  const lines=events.map(e=>{
+    const s=e.start?.dateTime?new Date(e.start.dateTime).toLocaleTimeString('hr-HR',{hour:'2-digit',minute:'2-digit'}):'cijeli dan';
+    return `${s} — ${e.summary||'bez naziva'}`;
+  });
+  return `${label}: ${lines.join('. ')}`;
+}
 
-  // Point pose + speak confirmation
-  avatar('saved');
-  addBotMsg(`✅ Zapamćeno!<span class="confirm-label">${esc(r.label)}</span><span class="confirm-detail">📅 ${esc(r.date)} ⏰ ${esc(r.time)}</span>${note}`,'saved');
-  speak("Okey tebra, zapamćeno.", () => { setTimeout(()=>resetState(), 1000); });
-  addLog(`💾 "${r.label}" @ ${r.date} ${r.time}`);
-  resetIdleTimer();
+// ---- Calendar event create ----
+async function createEvent(r){
+  if(!gToken)return false;
+  const s=new Date(`${r.date}T${r.time}:00`),e=new Date(s.getTime()+30*60000),tz=Intl.DateTimeFormat().resolvedOptions().timeZone;
+  try{
+    const res=await fetch('https://www.googleapis.com/calendar/v3/calendars/primary/events',{
+      method:'POST',headers:{'Authorization':`Bearer ${gToken}`,'Content-Type':'application/json'},
+      body:JSON.stringify({summary:r.label,description:`Podsjetnik: ${r.msg}`,start:{dateTime:s.toISOString(),timeZone:tz},end:{dateTime:e.toISOString(),timeZone:tz},reminders:{useDefault:false,overrides:[{method:'popup',minutes:10},{method:'popup',minutes:0}]}})
+    });
+    if(res.status===401){gToken=null;gDot.className='dt';return false;}
+    return res.ok;
+  }catch(e){return false;}
+}
+
+// ---- Save reminder ----
+let reminders=JSON.parse(localStorage.getItem('asistent_rem')||'[]');
+async function saveRem(){
+  const r={...pend,ts:new Date().toISOString(),id:Date.now()};
+  reminders.push(r);localStorage.setItem('asistent_rem',JSON.stringify(reminders));
+  let calOk=false;
+  if(gToken){cBox.classList.add('th');calOk=await createEvent(r);cBox.classList.remove('th');}
+  const note=calOk?'<span class="cd">📅 Calendar ✅</span>':gToken?'<span class="cd">⚠️ Calendar greška</span>':'<span class="cd">💾 Lokalno</span>';
+  av('saved');
+  addBot(`✅ Zapamćeno!<span class="cd">${esc(r.label)}</span><span class="cd">📅 ${esc(r.date)} ⏰ ${esc(r.time)}</span>${note}`,'ok');
+  speak("Okey tebra, zapamćeno.",()=>{setTimeout(()=>resetSt(),1500);});
+  resetIdle();
 }
 
 // ---- Brain ----
-async function callClaude(text,extra){
+async function callAI(text, extra){
   const n=getNow();
   const base=`Ti si parser govornih komandi. Korisnik govori bosanski/hrvatski/srpski.
 Danas: ${n.day}, ${n.date}. Vrijeme: ${n.time}.
 Odgovori SAMO JSON. Bez teksta, markdown-a, backtick-ova.
-"sutra"=sutrašnji,"prekosutra"=za 2 dana,"u petak"=sljedeći petak,"navečer"=20:00,"ujutro"=08:00,"popodne"=14:00.
-Nema datuma: date=null. Nema vremena: time=null.`;
+Datumi: "sutra"=sutrašnji datum, "prekosutra"=za 2 dana, "u petak"=sljedeći petak, "navečer"=20:00, "ujutro"=08:00, "popodne"=14:00. Nema datuma=null. Nema vremena=null.`;
+
   const sys=extra?base+'\n\n'+extra:base+`
-Za PODSJETNIK: {"action":"reminder","message":"opis","date":"YYYY-MM-DD ili null","time":"HH:MM ili null","suggested_label":"kratak naziv"}
-Za PITANJE: {"action":"question","message":"odgovor"}
-Za NEJASNO: {"action":"unclear","message":"objašnjenje"}`;
-  const res=await fetch('https://api.anthropic.com/v1/messages',{
+
+Za PODSJETNIK (zapamti, podsjeti, podsjećanje, reminder): {"action":"reminder","message":"opis","date":"YYYY-MM-DD ili null","time":"HH:MM ili null","suggested_label":"kratak naziv"}
+Za KALENDAR (šta imam, raspored, kalendar, zakazano, schedule): {"action":"calendar","scope":"today ili week"}
+Za PITANJE (sve ostalo što nije reminder ni kalendar): {"action":"question","message":"odgovor u 2 rečenice, informativan i zanimljiv"}
+Za NEJASNO (besmislice, nerazumljivo): {"action":"unclear","message":"opis"}`;
+
+  const r=await fetch('https://api.anthropic.com/v1/messages',{
     method:'POST',headers:{'Content-Type':'application/json','x-api-key':apiKey,'anthropic-version':'2023-06-01','anthropic-dangerous-direct-browser-access':'true'},
-    body:JSON.stringify({model:'claude-haiku-4-5-20251001',max_tokens:300,system:sys,messages:[{role:'user',content:text}]})
+    body:JSON.stringify({model:'claude-haiku-4-5-20251001',max_tokens:400,system:sys,messages:[{role:'user',content:text}]})
   });
-  if(!res.ok){const e=await res.json().catch(()=>({}));throw new Error(`API ${res.status}: ${e?.error?.message||res.statusText}`);}
-  const d=await res.json();return JSON.parse((d.content?.[0]?.text||'').replace(/```json|```/g,'').trim());
+  if(!r.ok){const e=await r.json().catch(()=>({}));throw new Error(`API ${r.status}: ${e?.error?.message||r.statusText}`);}
+  const d=await r.json();
+  return JSON.parse((d.content?.[0]?.text||'').replace(/```json|```/g,'').trim());
 }
 
-// ---- Handle input ----
-async function handleInput(text){
-  if(!apiKey){teddySay('Brate, nema API ključa. Otvori postavke.','error','idle');return;}
-  if(brainBusy)return;
-  brainBusy=true;convoBox.classList.add('thinking');avatar('thinking');
-  resetIdleTimer();
+// ---- Handle input by state ----
+async function handle(text){
+  if(!apiKey){teddySay('Brate, nema API ključa. Otvori postavke.','err','idle');return;}
+  if(busy)return;
+  busy=true;cBox.classList.add('th');av('thinking');resetIdle();
 
   try{
-    switch(state){
+    switch(st){
       case 'IDLE':{
-        const p=await callClaude(text);
+        const p=await callAI(text);
+
         if(p.action==='reminder'){
-          pendingReminder.message=p.message||text;pendingReminder.date=p.date||'';pendingReminder.time=p.time||'';pendingReminder.label=p.suggested_label||p.message||text;
-          if(!pendingReminder.date){state='NEED_DATE';teddySay('Koji datum?','ask');}
-          else if(!pendingReminder.time){state='NEED_TIME';teddySay(`📅 ${pendingReminder.date} — U koliko sati?`,'ask');}
-          else goToConfirm();
-        }else if(p.action==='question'){
-          teddySay(p.message,'');
-        }else{
-          // Confused — wave + funny line
-          const line=getConfusedLine();
-          avatar('confused');
-          addBotMsg(line,'ask');
-          speak(line,()=>avatar('idle'));
+          pend.msg=p.message||text;pend.date=p.date||'';pend.time=p.time||'';pend.label=p.suggested_label||p.message||text;
+          if(!pend.date){st='NEED_DATE';teddySay('Koji datum?','ask');}
+          else if(!pend.time){st='NEED_TIME';teddySay(`📅 ${pend.date}. U koliko sati?`,'ask');}
+          else goConfirm();
+        }
+        else if(p.action==='calendar'){
+          const days=p.scope==='week'?7:1;
+          const label=days===7?'Ova sedmica':'Danas';
+          if(!gToken){teddySay('Brate, prvo poveži Google Calendar.','ask','idle');}
+          else{
+            const ev=await fetchEvents(days);
+            const txt=formatEvents(ev,label);
+            teddySay(txt,'');
+          }
+        }
+        else if(p.action==='question'){
+          teddySay(p.message||'Nemam pojma.','');
+        }
+        else{
+          const line=rndConfused();
+          av('confused');addBot(line,'ask');
+          speak(line,()=>av('idle'));
         }
         break;
       }
       case 'NEED_DATE':{
-        const p=await callClaude(text,`Korisnik odgovara "koji datum?". Vrati: {"date":"YYYY-MM-DD ili null","time":"HH:MM ili null"}`);
-        if(p.date){pendingReminder.date=p.date;if(p.time)pendingReminder.time=p.time;if(!pendingReminder.time){state='NEED_TIME';teddySay(`📅 ${pendingReminder.date} — U koliko sati?`,'ask');}else goToConfirm();}
+        const p=await callAI(text,`Korisnik odgovara "koji datum?". Vrati: {"date":"YYYY-MM-DD ili null","time":"HH:MM ili null"}`);
+        if(p.date){pend.date=p.date;if(p.time)pend.time=p.time;if(!pend.time){st='NEED_TIME';teddySay(`📅 ${pend.date}. U koliko sati?`,'ask');}else goConfirm();}
         else teddySay('Ne kužim datum. Reci sutra, u petak, ili neki datum.','ask');
         break;
       }
       case 'NEED_TIME':{
-        const p=await callClaude(text,`Korisnik odgovara "u koliko sati?". Vrati: {"time":"HH:MM ili null"}`);
-        if(p.time){pendingReminder.time=p.time;goToConfirm();}
+        const p=await callAI(text,`Korisnik odgovara "u koliko sati?". Vrati: {"time":"HH:MM ili null"}`);
+        if(p.time){pend.time=p.time;goConfirm();}
         else teddySay('Ne kužim vrijeme. Reci u devet, navečer, u 15 i 30.','ask');
         break;
       }
       case 'CONFIRM':{
-        const r=checkConfirm(text);
-        if(r==='yes')await saveReminder();
-        else if(r==='no'){state='NEED_LABEL';teddySay('Okej, reci mi kako da ga nazovem.','ask');}
+        const r=chkCfm(text);
+        if(r==='yes')await saveRem();
+        else if(r==='no'){st='NEED_LABEL';teddySay('Reci mi kako da ga nazovem.','ask');}
         else teddySay('Reci da ili promijeni.','ask');
         break;
       }
-      case 'NEED_LABEL':{
-        pendingReminder.label=text.trim();await saveReminder();break;
-      }
+      case 'NEED_LABEL':{pend.label=text.trim();await saveRem();break;}
     }
   }catch(e){
-    addBotMsg(`❌ ${esc(e.message)}`,'error');avatar('idle');
-  }finally{convoBox.classList.remove('thinking');brainBusy=false;}
+    addBot(`❌ ${esc(e.message)}`,'err');av('idle');
+  }finally{cBox.classList.remove('th');busy=false;}
 }
 
-function goToConfirm(){
-  state='CONFIRM';
-  const msg=`Spasiti kao: "${pendingReminder.label}" — 📅 ${pendingReminder.date} ⏰ ${pendingReminder.time}?`;
-  addBotMsg(`${esc(msg)}<div class="hint-text">"da" ili "promijeni"</div>`,'confirm');
-  avatar('speaking');
-  speak(`Zapamtiti kao ${pendingReminder.label}, ${pendingReminder.date}, u ${pendingReminder.time}? Reci da ili promijeni.`,()=>{if(state==='CONFIRM')avatar('idle');});
+function goConfirm(){
+  st='CONFIRM';
+  addBot(`Zapamtiti kao: "${esc(pend.label)}" — 📅 ${esc(pend.date)} ⏰ ${esc(pend.time)}?<div class="ht">"da" ili "promijeni"</div>`,'cfm');
+  av('speaking');
+  speak(`Zapamtiti kao ${pend.label}, ${pend.date}, u ${pend.time}? Reci da ili promijeni.`,()=>{if(st==='CONFIRM')av('idle');});
 }
 
 // ---- Speech Recognition ----
 const SR=window.SpeechRecognition||window.webkitSpeechRecognition;
-if(!SR){unsupportedEl.style.display='block';unsupportedEl.textContent='Koristi Chrome.';micBtn.disabled=true;micBtn.style.opacity='0.3';}
-if(location.protocol!=='https:'&&!['localhost','127.0.0.1'].includes(location.hostname)){unsupportedEl.style.display='block';unsupportedEl.innerHTML='⚠️ HTTPS';}
+if(!SR){unsup.style.display='block';unsup.textContent='Koristi Chrome.';micB.disabled=true;micB.style.opacity='0.3';}
+if(location.protocol!=='https:'&&!['localhost','127.0.0.1'].includes(location.hostname)){unsup.style.display='block';unsup.innerHTML='⚠️ HTTPS';}
 
-langBtns.forEach(b=>b.addEventListener('click',()=>{if(isListening)stopListening();langBtns.forEach(x=>x.classList.remove('active'));b.classList.add('active');currentLang=b.dataset.lang;}));
+langBtns.forEach(b=>b.addEventListener('click',()=>{
+  if(listening)stopListen();
+  langBtns.forEach(x=>x.classList.remove('active'));
+  b.classList.add('active');lang=b.dataset.lang;
+}));
 
-function createRecognition(){
-  if(!SR)return null;const r=new SR();r.lang=currentLang;r.continuous=false;r.interimResults=false;r.maxAlternatives=1;
-  r.onresult=(e)=>{if(e.results.length>0&&e.results[0].isFinal){const t=e.results[0][0].transcript.trim();if(t.length>0){addUserMsg(t);handleInput(t);resetIdleTimer();}}};
-  r.onerror=(e)=>{if(e.error==='not-allowed'){statusEl.textContent='🔒';isListening=false;micBtn.classList.remove('listening');}};
-  r.onend=()=>{if(isListening){clearTimeout(restartTimer);restartTimer=setTimeout(()=>{if(isListening)try{createRecognition()?.start();}catch(e){isListening=false;micBtn.classList.remove('listening');statusEl.textContent='tap';statusEl.classList.remove('active');}},400);}else{micBtn.classList.remove('listening');statusEl.textContent='tap';statusEl.classList.remove('active');}};
+function mkRec(){
+  if(!SR)return null;
+  const r=new SR();r.lang=lang;r.continuous=false;r.interimResults=false;r.maxAlternatives=1;
+  r.onresult=e=>{if(e.results.length>0&&e.results[0].isFinal){const t=e.results[0][0].transcript.trim();if(t.length>0){addUsr(t);handle(t);resetIdle();}}};
+  r.onerror=e=>{if(e.error==='not-allowed'){micSt.textContent='🔒';listening=false;micB.classList.remove('on');}};
+  r.onend=()=>{if(listening){clearTimeout(restartT);restartT=setTimeout(()=>{if(listening)try{mkRec()?.start();}catch(e){listening=false;micB.classList.remove('on');micSt.textContent='tap';micSt.classList.remove('on');}},400);}else{micB.classList.remove('on');micSt.textContent='tap';micSt.classList.remove('on');}};
   return r;
 }
 
-function startListening(){if(!SR)return;isListening=true;micBtn.classList.add('listening');statusEl.textContent='...';statusEl.classList.add('active');avatar('listening');try{createRecognition()?.start();}catch(e){isListening=false;micBtn.classList.remove('listening');}}
-function stopListening(){isListening=false;clearTimeout(restartTimer);micBtn.classList.remove('listening');statusEl.textContent='tap';statusEl.classList.remove('active');if(state==='IDLE')avatar('idle');}
-micBtn.addEventListener('click',()=>{isListening?stopListening():startListening();});
+function startListen(){if(!SR)return;listening=true;micB.classList.add('on');micSt.textContent='...';micSt.classList.add('on');av('listening');try{mkRec()?.start();}catch(e){listening=false;micB.classList.remove('on');}}
+function stopListen(){listening=false;clearTimeout(restartT);micB.classList.remove('on');micSt.textContent='tap';micSt.classList.remove('on');if(st==='IDLE')av('idle');}
+micB.addEventListener('click',()=>{listening?stopListen():startListen();});
 
-clearBtn.addEventListener('click',()=>{
-  convoMessages.innerHTML='';
-  teddySay("Op pa, sve čisto. Reci nešto pametno.",'');
-  logEl.innerHTML='';resetState();
-});
-cancelBtn.addEventListener('click',()=>{if(state!=='IDLE'){teddySay('Otkazano.','error','idle');resetState();}});
+clrB.addEventListener('click',()=>{cMsg.innerHTML='';teddySay("Sve čisto. Reci nešto pametno.",'');resetSt();});
+canB.addEventListener('click',()=>{if(st!=='IDLE'){teddySay('Otkazano.','err','idle');resetSt();}});
 
-// ---- Greeting on load ----
-window.onTeddyReady = function() {
-  const greeting = "Op pa gdje si tebra, reci mi nešto pametno da zapamtim.";
-  addBotMsg(greeting, '');
-  setTimeout(() => {
-    avatar('speaking');
-    speak(greeting, () => avatar('idle'));
-    resetIdleTimer();
-  }, 500);
+// ---- Greeting + Morning Briefing ----
+window.onTeddyReady = async function(){
+  const n=getNow();
+  let greeting="Pa gdje si tebra, koju glupost ću sada da zapamtim?";
+
+  // Morning briefing (6-12)
+  if(n.hour>=6 && n.hour<12 && gToken){
+    try{
+      const ev=await fetchEvents(1);
+      if(ev && ev.length>0){
+        const evTxt=ev.map(e=>{
+          const s=e.start?.dateTime?new Date(e.start.dateTime).toLocaleTimeString('hr-HR',{hour:'2-digit',minute:'2-digit'}):'cijeli dan';
+          return `u ${s} ${e.summary||''}`;
+        }).join(', ');
+        greeting=`Pa gdje si tebra. Danas imaš: ${evTxt}. A sad reci, koju glupost da zapamtim?`;
+      }
+    }catch(e){}
+  }
+
+  addBot(greeting,'');
+  setTimeout(()=>{av('speaking');speak(greeting,()=>av('idle'));resetIdle();},600);
 };
 
 document.addEventListener('dblclick',e=>e.preventDefault());
-initGoogleAuth();
-resetIdleTimer();
+initG();
+resetIdle();
 </script>
 </body>
 </html>
